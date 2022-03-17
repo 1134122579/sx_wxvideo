@@ -10,6 +10,14 @@ export function login(data) {
     data
   })
 }
+//wx 登录
+export function wxlogin(data) {
+  return request({
+    url: api.wxlogin,
+    method: 'post',
+    data
+  })
+}
 
 // 用户信息 post 方法
 export function getUserInfo(data) {
@@ -49,11 +57,11 @@ export function aboutUs(params) {
   })
 }
 // 案例展示
-export function getBuildFlim(params) {
+export function getVideoList(data) {
   return request({
-    url: api.getBuildFlim,
-    method: 'get',
-    params,
+    url: api.getVideoList,
+    method: 'post',
+    data,
     hideloading: true
   })
 }
@@ -72,6 +80,41 @@ export function getShare(data) {
   return request({
     url: api.getShare,
     method: 'post',
-    data,
+    data
+  })
+}
+export function getVideoDetails(data) {
+  return request({
+    url: api.getVideoDetails,
+    method: 'post',
+    data
+  })
+}
+export function zanVideo(data) {
+  return request({
+    url: api.zanVideo,
+    method: 'post',
+    data
+  })
+}
+export function comment_video(data) {
+  return request({
+    url: api.comment_video,
+    method: 'post',
+    data
+  })
+}
+export function collect_video(data) {
+  return request({
+    url: api.collect_video,
+    method: 'post',
+    data
+  })
+}
+export function getVideoComment(data) {
+  return request({
+    url: api.getVideoComment,
+    method: 'post',
+    data
   })
 }

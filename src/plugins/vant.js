@@ -9,6 +9,7 @@ import {
   Image as VanImage,
   NavBar,
   Icon,
+  Field,
   Sticky,
   Popup,
   Empty,
@@ -16,6 +17,7 @@ import {
   SwipeItem,
   Lazyload
 } from 'vant'
+Vue.use(Field)
 Vue.use(Button)
 Vue.use(Icon)
 Vue.use(Popup)
@@ -26,6 +28,6 @@ Vue.use(Sticky)
 Vue.use(Empty)
 Vue.use(NavBar)
 Vue.use(Tabbar).use(TabbarItem)
-Vue.use(Swipe);
+Vue.use(Swipe)
 Vue.use(SwipeItem)
-Vue.use(Lazyload);
+Vue.use(Lazyload)

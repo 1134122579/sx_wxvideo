@@ -1,5 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
+import { getToken, setToken, removeToken } from '@/utils/loading.js'
+import { okload } from '@/utils/wxLoad.js'
 import { Toast } from 'vant'
 // 根据环境不同引入不同api地址
 import { baseApi } from '@/config'
@@ -21,8 +23,11 @@ service.interceptors.request.use(
         forbidClick: true
       })
     }
-    if (store.getters.token) {
-      config.headers['X-Token'] = ''
+    // setToken(
+    //   '0559f388a67aeb400124cd12052dcd65dc15f19c5fb082f8e3bbf0b2bb95239eb31a66b89ee790a140aa8e24d1a4f6906ea7545adfd6b36805ec722d59a6c5d71bbbcc823565e86b9a7e590d4dc76737'
+    // )
+    if (getToken()) {
+      config.headers['token'] = getToken()
     }
     return config
   },
@@ -39,10 +44,12 @@ service.interceptors.response.use(
     const res = response.data
     if (res.status && res.status !== 200) {
       // 登录超时,重新登录
-      if (res.status === 401) {
-        store.dispatch('FedLogOut').then(() => {
-          location.reload()
-        })
+      if (res.status === 203) {
+        removeToken()
+        okload()
+      }
+      if (res.status === 202) {
+        return Promise.reject(Toast.fail(res.message))
       }
       return Promise.reject(res || 'error')
     } else {

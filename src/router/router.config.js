@@ -5,8 +5,14 @@
 export const constantRouterMap = [
   {
     path: '/',
-    component: () => import('@/views/home/index.vue')
+    component: () => import('@/views/home/home.vue')
   },
+  {
+    path: '/videodetaile',
+    name: 'Detaile',
+    component: () => import('@/views/home/videodetaile.vue')
+  },
+
   // {
   //   path: '/newculture',
   //   name: 'newCulture',
