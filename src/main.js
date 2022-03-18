@@ -2,6 +2,7 @@
 // https://github.com/zloirock/core-js/blob/master/docs/2019-03-19-core-js-3-babel-and-a-look-into-the-future.md#babelpolyfill
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
+import './utils/setting'
 
 import Vue from 'vue'
 import App from './App.vue'
@@ -9,6 +10,7 @@ import router from './router'
 import store from './store'
 import VideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
+
 Vue.use(VideoPlayer)
 // 设置 js中可以访问 $cdn
 import { $cdn } from '@/config'
@@ -23,6 +25,7 @@ import 'lib-flexible/flexible.js'
 
 // filters
 import './filters'
+
 Vue.config.productionTip = false
 
 new Vue({

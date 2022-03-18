@@ -12,6 +12,7 @@ const api = {
   comment_video: '/comment_video', //评论视频
   getVideoComment: '/getVideoComment', //获取视频评论
   collect_video: '/collect_video', //收藏
+  setVideoPv: '/setVideoPv', //收藏
   zanVideo: '/zanVideo' //点赞
 }
 

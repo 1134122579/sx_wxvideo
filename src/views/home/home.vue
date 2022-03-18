@@ -2,12 +2,12 @@
   <div class="homepage">
     <div class="header">
       <div class="header-userinfo flexbetween">
-        <div class="userinfo flexstart">
+        <div class="userinfo flexstart" @click="goGZ">
           <div class="user-img">
             <img src="@/assets/logo.jpg" alt="" />
           </div>
           <div class="info">
-            <div class="userinfo-name">天空之橙</div>
+            <div class="userinfo-name">{{ title }}</div>
             <div class="userinfo-adress">上海</div>
           </div>
         </div>
@@ -18,16 +18,28 @@
         </div>
       </div>
       <div class="header-desc">
-        <div class="flexstart desc"><i class="iconfont icon-renzheng1 iconlogo"></i>设计美学自媒体</div>
+        <div class="flexstart desc">
+          <!-- <i class="iconfont icon-rz iconlogo rz"></i> -->
+          <img src="@/assets/rz.png" class="rz" alt="" />
+          设计美学自媒体
+        </div>
         <div class="flexstart desc">设计美学自媒体</div>
-        <div class="flexstart desc"><i class="iconfont icon-guanzhuchenggong iconlogo"></i>1个朋友关注</div>
-        <div class="flexstart desc"><i class="iconfont icon-geren iconlogo"></i>公众号：天空之橙</div>
+        <div class="flexstart desc"><i class="iconfont icon-guanzhuchenggong iconlogo"></i>10个朋友关注</div>
+        <div class="flexstart desc">
+          <a
+            style="color: #55648c"
+            href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAwNzczOTk3OA==&scene=110#wechat_redirect"
+            target="_blank"
+          >
+            <i class="iconfont icon-geren icongzlogo"></i>公众号：{{ title }}
+          </a>
+        </div>
       </div>
       <div class="header-label">
         <ul class="flexstart">
-          <li>#内外之间</li>
+          <li>#{{ title }}</li>
           <li>#建筑</li>
-          <li>#人文情怀1</li>
+          <li>#人文情怀</li>
         </ul>
       </div>
     </div>
@@ -39,6 +51,11 @@
             <van-image width="100%" fit="cover" height="100%" :src="item.cover" />
           </div>
           <p>{{ item.name }}</p>
+          <div class="zan-num flexstart">
+            <i class="iconfont icon-icon- icon"></i>
+            <span>{{ item.like_num }}</span>
+            <i class="iconfont icon-zhiding1 iconzd" v-show="item.is_top == 1"></i>
+          </div>
         </div>
       </div>
     </van-list>
@@ -49,6 +66,7 @@ import { getVideoList } from '@/api/user.js'
 export default {
   data() {
     return {
+      title: '天空之橙·DESIGN',
       list: [],
       loading: false,
       finished: false,
@@ -59,6 +77,7 @@ export default {
   },
   created() {
     // this.getVideoList()
+    document.title = this.title
   },
   methods: {
     goGZ() {
@@ -83,6 +102,13 @@ export default {
       }, 1000)
     },
     goVideo(data) {
+      // this.$router.replace({
+      //   path: '/videodetaile',
+      //   query: {
+      //     id: data.id
+      //   }
+      // })
+      // return
       this.$router.push({
         path: '/videodetaile',
         query: {
@@ -133,26 +159,26 @@ export default {
       .userinfo {
         flex: 1;
         .user-img {
-          width: 60px;
-          height: 60px;
+          width: 56px;
+          height: 56px;
           display: block;
           border-radius: 50%;
           overflow: hidden;
-          background: #ff0000;
+          // background: #ff0000;
           img {
             width: 100%;
             height: 100%;
           }
         }
         .info {
-          padding-left: 18px;
+          padding-left: 8px;
           .userinfo-name {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            color: var(--color-scheme-text-color);
+            color: var(--color-scheme-title-color);
           }
           .userinfo-adress {
-            margin-top: 6px;
+            margin-top: 8px;
             font-size: 14px;
           }
         }
@@ -161,7 +187,7 @@ export default {
       .user-button {
         flex-shrink: 0;
         .button {
-          padding: 8px 16px;
+          padding: 7px 14px;
           border-radius: 4px;
           font-weight: 800;
           font-size: 14px;
@@ -170,29 +196,40 @@ export default {
         }
         .gz {
           background: #ff9a2e;
-          color: #fff;
+          color: rgb(240, 240, 240);
         }
       }
     }
     .header-desc {
-      .icon-renzheng1 {
+      .rz {
         color: #fdc309;
+        width: 16px;
       }
       .iconlogo {
         margin-right: 4px;
+        font-size: 18px;
+        // font-weight: 600;
+      }
+      .icongzlogo {
+        margin-right: 4px;
+        font-size: 16px;
       }
       .desc {
-        margin-top: 8px;
+        margin-top: 10px;
+        a {
+          text-decoration: unset;
+        }
       }
     }
     .header-label {
       margin-top: 40px;
       li {
-        margin-right: 10px;
+        margin-right: 8px;
         // background: #f6f6f6;
         background: var(--color-li-background);
-        padding: 4px 8px;
+        padding: 3px 8px;
         border-radius: 10px;
+        font-size: 13px;
       }
     }
   }
@@ -208,6 +245,7 @@ export default {
       border-radius: 4px;
       overflow: hidden;
       background: var(--color-scheme-background);
+      position: relative;
 
       .block-img {
         height: 180px;
@@ -220,7 +258,31 @@ export default {
         padding: 8px 6px;
         box-sizing: border-box;
         color: #333;
-        color: var(--color-scheme-text-color);
+        color: var(--color-scheme-title-color);
+      }
+      .zan-num {
+        position: absolute;
+        right: 10px;
+        z-index: 2;
+        top: 158px;
+        // background: rgba(0, 0, 0, 0.3);
+        background: #615b59;
+        padding: 2px 5px;
+        font-size: 12px;
+        border-radius: 20px;
+        color: #fff;
+        line-height: 1;
+        .icon {
+          font-size: 13px;
+        }
+        span {
+          margin: 0 3px;
+        }
+        .iconzd {
+          font-size: 12px;
+          padding-left: 3px;
+          border-left: 1px solid rgb(175, 175, 175);
+        }
       }
     }
   }

@@ -12,6 +12,11 @@ export const constantRouterMap = [
     name: 'Detaile',
     component: () => import('@/views/home/videodetaile.vue')
   },
+  {
+    path: '/searchvideodetaile',
+    name: 'Detaile',
+    component: () => import('@/views/home/searchvideodetaile.vue')
+  },
 
   // {
   //   path: '/newculture',

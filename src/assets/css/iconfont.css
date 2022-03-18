@@ -1,8 +1,8 @@
 @font-face {
   font-family: 'iconfont'; /* Project id 3250097 */
-  src: url('//at.alicdn.com/t/font_3250097_6ppe0bvwvy.woff2?t=1647415025174') format('woff2'),
-    url('//at.alicdn.com/t/font_3250097_6ppe0bvwvy.woff?t=1647415025174') format('woff'),
-    url('//at.alicdn.com/t/font_3250097_6ppe0bvwvy.ttf?t=1647415025174') format('truetype');
+  src: url('//at.alicdn.com/t/font_3250097_uain2u60dg.woff2?t=1647488613380') format('woff2'),
+    url('//at.alicdn.com/t/font_3250097_uain2u60dg.woff?t=1647488613380') format('woff'),
+    url('//at.alicdn.com/t/font_3250097_uain2u60dg.ttf?t=1647488613380') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,26 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bofang:before {
+  content: '\e66e';
+}
+
+.icon-zhiding:before {
+  content: '\e63d';
+}
+
+.icon-zhiding1:before {
+  content: '\e68b';
+}
+
+.icon-renzheng:before {
+  content: '\ff5b';
+}
+
+.icon-rz:before {
+  content: '\ff5c';
 }
 
 .icon-jurassic_openeyes:before {

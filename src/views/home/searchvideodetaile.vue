@@ -191,8 +191,9 @@ export default {
 
     // 获取视频评论列表
     goGZ() {
-      location.href =
-        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAwNzczOTk3OA==&scene=110#wechat_redirect'
+      this.$router.replace({
+        path: '/'
+      })
     },
     getVideoComment() {
       this.loading = true
@@ -286,7 +287,7 @@ export default {
         title: res.data.name,
         url: location.href,
         desc: '',
-        link: window.location.origin + '/wxvideo/searchvideodetaile' + '?id=' + id,
+        link: window.location.origin + window.location.pathname + '?id=' + id,
         imgUrl: res.data.video_url + '?vframe/jpg/offset/1'
       }
       getShareInfo(wxConfig)

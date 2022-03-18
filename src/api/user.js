@@ -47,6 +47,14 @@ export function getAbout(params) {
     hideloading: true
   })
 }
+export function setVideoPv(params) {
+  return request({
+    url: api.setVideoPv,
+    method: 'get',
+    params,
+    hideloading: true
+  })
+}
 // 联系我们
 export function aboutUs(params) {
   return request({

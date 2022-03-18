@@ -1,3 +1,4 @@
+@import "./font.css";
 @import './variables.scss';
 @import './mixin.scss';
 @import "./reset"; // 清除样式
@@ -11,6 +12,7 @@ body,
   color: #262626;
   // background: red;
   font-family: Arial, Helvetica, 'STHeiti STXihei', 'Microsoft YaHei', Tohoma, sans-serif;
+  // font-family: "阿里巴巴普惠体";
   background-color: $background-color;
 }
 
