@@ -290,7 +290,7 @@ export default {
         url: location.href,
         desc: '',
         link: window.location.origin + '/wxvideo/searchvideodetaile' + '?id=' + id,
-        imgUrl: res.data.video_url + '?vframe/jpg/offset/1'
+        imgUrl: res.data.video_url + '?vframe/jpg/offset/' + (res.data.zhen_num || 1)
       }
       getShareInfo(wxConfig)
     },

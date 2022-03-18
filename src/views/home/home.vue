@@ -43,22 +43,24 @@
         </ul>
       </div>
     </div>
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getVideoList">
-      <div class="liststyle flexbetween">
-        <div class="block" @click="goVideo(item)" v-for="item in list" :key="item.id">
-          <!-- {{ item }} -->
-          <div class="block-img">
-            <van-image width="100%" fit="cover" height="100%" :src="item.cover" />
-          </div>
-          <p>{{ item.name }}</p>
-          <div class="zan-num flexstart">
-            <i class="iconfont icon-icon- icon"></i>
-            <span>{{ item.like_num }}</span>
-            <i class="iconfont icon-zhiding1 iconzd" v-show="item.is_top == 1"></i>
+    <div class="back">
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getVideoList">
+        <div class="liststyle flexbetween">
+          <div class="block" @click="goVideo(item)" v-for="item in list" :key="item.id">
+            <!-- {{ item }} -->
+            <div class="block-img">
+              <van-image width="100%" fit="cover" height="100%" :src="item.cover" />
+            </div>
+            <p>{{ item.name }}</p>
+            <div class="zan-num flexstart">
+              <i class="iconfont icon-icon- icon"></i>
+              <span>{{ item.like_num }}</span>
+              <i class="iconfont icon-zhiding1 iconzd" v-show="item.is_top == 1"></i>
+            </div>
           </div>
         </div>
-      </div>
-    </van-list>
+      </van-list>
+    </div>
   </div>
 </template>
 <script>
@@ -231,12 +233,14 @@ export default {
       }
     }
   }
+  .back {
+    background: var(--color-li-background);
+  }
   .liststyle {
     flex-wrap: wrap;
     padding: 8px;
     box-sizing: border-box;
     // background: #ececec;
-    background: var(--color-li-background);
     .block {
       width: 49.4%;
       margin-bottom: 6px;
