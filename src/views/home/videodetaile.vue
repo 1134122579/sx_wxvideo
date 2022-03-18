@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <video-player
+      v-if="isvideoshow"
       class="video-player vjs-custom-skin"
       ref="videoPlayer"
       :playsinline="true"
@@ -137,6 +138,7 @@ export default {
       show: false,
       page: 1,
       videoinfo: {},
+      isvideoshow: false,
       playerOptions: {
         // playbackRates: [0.5, 1.0, 1.5, 2.0, 3.0], // 可选的播放速度
         autoplay: true, // 如果为 true,浏览器准备好时开始回放。
@@ -153,7 +155,7 @@ export default {
             src: 'http://mfyfile.greatorange.cn/MFYVideo1611813886594町洋0150无水印中文加S.mp4' // url地址
           }
         ],
-        poster: 'http://mfyfile.greatorange.cn/MFYVideo1611813886594町洋0150无水印中文加S.mp4?vframe/jpg/offset/1', // 封面地址
+        poster: '', // 封面地址
         notSupportedMessage: '此视频暂无法播放，请稍后再试', // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: {
           timeDivider: true, // 当前时间和持续时间的分隔符
@@ -278,7 +280,8 @@ export default {
       let res = await getVideoDetails({ video_id: this.$route.query.id })
       // this.$refs.videoPlayer.player.src(res.data.video_url)
       this.playerOptions['sources'][0]['src'] = res.data.video_url
-      this.playerOptions['poster'] = res.data.video_url + '?vframe/jpg/offset/1'
+      this.playerOptions['poster'] = res.data.video_url + '?vframe/jpg/offset/' + (res.data.zhen_num || 1)
+      this.isvideoshow = true
       console.log(this.playerOptions, 'getVideoDetails')
       document.title = res.data.name
       this.videoinfo = res.data

@@ -37,7 +37,9 @@ export default {
   }
 }
 #app {
-  height: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  background: var(--color-li-background);
   // background: chartreuse;
 }
 .flexstart {

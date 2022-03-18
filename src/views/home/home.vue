@@ -122,7 +122,7 @@ export default {
         res = res.data
         if (res.length > 0) {
           res.map(item => {
-            item['cover'] = item['video_url'] + '?vframe/jpg/offset/1'
+            item['cover'] = item['video_url'] + '?vframe/jpg/offset/' + (item.zhen_num || 1)
             return item
           })
           if (this.listQuery.page == 1) {
@@ -143,8 +143,6 @@ export default {
 
 <style lang="scss" scoped>
 .homepage {
-  // background: #fff;
-  // color: #7a7a7a;
   background: var(--color-scheme-background);
   color: var(--color-scheme-text-color);
   height: 100%;
