@@ -24,7 +24,7 @@
           设计美学自媒体
         </div>
         <div class="flexstart desc">设计美学自媒体</div>
-        <div class="flexstart desc"><i class="iconfont icon-guanzhuchenggong iconlogo"></i>10个朋友关注</div>
+        <div class="flexstart desc"><i class="iconfont icon-guanzhuchenggong iconlogo"></i>{{ numman }}个朋友关注</div>
         <div class="flexstart desc">
           <a
             style="color: #55648c"
@@ -50,13 +50,13 @@
             <!-- {{ item }} -->
             <div class="block-img">
               <van-image width="100%" fit="cover" height="100%" :src="item.cover" />
+              <div class="zan-num flexstart">
+                <i class="iconfont icon-icon- icon"></i>
+                <span>{{ item.like_num }}</span>
+                <i class="iconfont icon-zhiding1 iconzd" v-show="item.is_top == 1"></i>
+              </div>
             </div>
             <p>{{ item.name }}</p>
-            <div class="zan-num flexstart">
-              <i class="iconfont icon-icon- icon"></i>
-              <span>{{ item.like_num }}</span>
-              <i class="iconfont icon-zhiding1 iconzd" v-show="item.is_top == 1"></i>
-            </div>
           </div>
         </div>
       </van-list>
@@ -71,6 +71,7 @@ export default {
   data() {
     return {
       title: '天空之橙·DESIGN',
+      numman:10,
       list: [],
       loading: false,
       finished: false,
@@ -82,6 +83,8 @@ export default {
   created() {
     // this.getVideoList()
     document.title = this.title
+    this.numman = this.randomNum(10, 30)
+    localStorage.setItem('NUM', this.numman)
   },
   methods: {
     goGZ() {
@@ -120,6 +123,19 @@ export default {
           page: data.page
         }
       })
+    },
+    randomNum(minNum, maxNum) {
+      switch (arguments.length) {
+        case 1:
+          return parseInt(Math.random() * minNum + 1, 10)
+          break
+        case 2:
+          return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10)
+          break
+        default:
+          return 0
+          break
+      }
     },
     getVideoList() {
       getVideoList(this.listQuery).then(res => {
@@ -257,8 +273,37 @@ export default {
       position: relative;
 
       .block-img {
-        height: 180px;
+        height: 200px;
         background: #ff9a2e;
+        position: relative;
+        .zan-num {
+          position: absolute;
+          right: 10px;
+          z-index: 2;
+          bottom: 10px;
+          // background: rgba(0, 0, 0, 0.3);
+          background: #615b59;
+          padding: 0 5px;
+          height: 18px;
+          font-size: 12px;
+          border-radius: 20px;
+          color: #fff;
+          line-height: 18px;
+          .icon {
+            font-size: 13px;
+            padding: 0;
+          }
+          span {
+            padding: 0;
+            margin: 0 3px;
+          }
+          .iconzd {
+            padding: 0;
+            font-size: 12px;
+            padding-left: 3px;
+            border-left: 1px solid rgb(175, 175, 175);
+          }
+        }
       }
       p {
         overflow: hidden;
@@ -268,30 +313,6 @@ export default {
         box-sizing: border-box;
         color: #333;
         color: var(--color-scheme-title-color);
-      }
-      .zan-num {
-        position: absolute;
-        right: 10px;
-        z-index: 2;
-        top: 158px;
-        // background: rgba(0, 0, 0, 0.3);
-        background: #615b59;
-        padding: 2px 5px;
-        font-size: 12px;
-        border-radius: 20px;
-        color: #fff;
-        line-height: 1;
-        .icon {
-          font-size: 13px;
-        }
-        span {
-          margin: 0 3px;
-        }
-        .iconzd {
-          font-size: 12px;
-          padding-left: 3px;
-          border-left: 1px solid rgb(175, 175, 175);
-        }
       }
     }
   }

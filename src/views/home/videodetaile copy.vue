@@ -1,77 +1,156 @@
 <template>
   <div class="home">
-    <div class="video-list">
-      <div class="video-block" @click="dblclick">
-        <video-player
-          class="video-player vjs-custom-skin"
-          ref="videoPlayer"
-          webkit-playsinline="true"
-          x5-playsinline="true"
-          x5-video-orientation="landscape"
-          :playsinline="true"
-          :options="playerOptions"
-          @play="onPlayerPlay($event)"
-          @pause="onPlayerPause($event)"
-          @ended="onPlayerEnded($event)"
-          @waiting="onPlayerWaiting($event)"
-          @playing="onPlayerPlaying($event)"
-          @loadeddata="onPlayerLoadeddata($event)"
-          @timeupdate="onPlayerTimeupdate($event)"
-          @canplay="onPlayerCanplay($event)"
-          @canplaythrough="onPlayerCanplaythrough($event)"
-          @statechanged="playerStateChanged($event)"
-          @ready="playerReadied"
-        >
-        </video-player>
-        <div class="bofang">
-          <i class="iconfont icon-bofang bofangicon" v-show="isbofang"></i>
-        </div>
-      </div>
-      <!-- 底部 -->
-      <div class="foolter">
-        <div class="desc">
-          <p>{{ videoinfo.name }}</p>
-        </div>
-        <div class="userinfo flexbetween">
-          <div class="user-info flexstart" @click="goGZ(videoinfo)">
-            <div class="user-img">
-              <img src="@/assets/logo.jpg" alt="" />
-            </div>
-            <div class="user-name">
-              <p class="usertitle flexstart">天空之橙<img src="../../assets/rz.png" alt="" /></p>
-              <p style="color: #8c8c8c">{{ numman }}个朋友关注</p>
+    <van-swipe :show-indicators="false" ref="vanswipe" :loop="videoloop" @change="onChange" vertical>
+      <van-swipe-item class="product_swiper">
+        <div class="video-list">
+          <div class="video-block" @click="dblclick">
+            <video-player
+              class="video-player vjs-custom-skin"
+              ref="videoPlayer"
+              webkit-playsinline="true"
+              x5-playsinline="true"
+              x5-video-orientation="landscape"
+              :playsinline="true"
+              :options="playerOptions"
+              @play="onPlayerPlay($event)"
+              @pause="onPlayerPause($event)"
+              @ended="onPlayerEnded($event)"
+              @waiting="onPlayerWaiting($event)"
+              @playing="onPlayerPlaying($event)"
+              @loadeddata="onPlayerLoadeddata($event)"
+              @timeupdate="onPlayerTimeupdate($event)"
+              @canplay="onPlayerCanplay($event)"
+              @canplaythrough="onPlayerCanplaythrough($event)"
+              @statechanged="playerStateChanged($event)"
+              @ready="playerReadied"
+            >
+            </video-player>
+            <!-- 播放按钮 -->
+            <!-- @click.capture="dblclick" -->
+            <div class="bofang">
+              <i class="iconfont icon-bofang bofangicon" v-show="isbofang"></i>
             </div>
           </div>
-          <div class="user-button">
-            <ul>
-              <li @click="setcollect">
-                <i class="iconfont icon-shoucang-x" style="color: #fd9632" v-show="videoinfo.is_collect == 1"></i>
-                <i class="iconfont icon-shoucang" v-show="videoinfo.is_collect != 1"></i>
-                <span>{{ videoinfo.collect_num }}</span>
-              </li>
-              <li @click="onshare">
-                <i class="iconfont icon-fenxiang"></i>
-                <!-- <i class="iconfont icon-jurassic_openeyes"></i> -->
-                <span>{{ videoinfo.pv_num }}</span>
-              </li>
-              <li @click="setzan">
-                <i
-                  class="iconfont icon-like-x like fa-heart"
-                  style="color: #e75d58"
-                  v-show="videoinfo.is_like == 1"
-                ></i>
-                <i class="iconfont icon-like like" v-show="videoinfo.is_like != 1"></i>
-                <span>{{ videoinfo.like_num }}</span>
-              </li>
-              <li @click="lookpl">
-                <i class="iconfont icon-duihuaqipao"></i>
-                <span>{{ videoinfo.pl_num }}</span>
-              </li>
-            </ul>
+          <!-- 底部 -->
+          <div class="foolter">
+            <div class="desc">
+              <p>{{ videoinfo.name }}</p>
+            </div>
+            <div class="userinfo flexbetween">
+              <div class="user-info flexstart" @click="goGZ(videoinfo)">
+                <div class="user-img">
+                  <img src="@/assets/logo.jpg" alt="" />
+                </div>
+                <div class="user-name">
+                  <p class="usertitle flexstart">天空之橙<img src="../../assets/rz.png" alt="" /></p>
+                  <p style="color: #8c8c8c">10个朋友关注</p>
+                </div>
+              </div>
+              <div class="user-button">
+                <ul>
+                  <li @click="setcollect">
+                    <i class="iconfont icon-shoucang-x" style="color: #fd9632" v-show="videoinfo.is_collect == 1"></i>
+                    <i class="iconfont icon-shoucang" v-show="videoinfo.is_collect != 1"></i>
+                    <span>{{ videoinfo.collect_num }}</span>
+                  </li>
+                  <li @click="onshare">
+                    <i class="iconfont icon-fenxiang"></i>
+                    <!-- <i class="iconfont icon-jurassic_openeyes"></i> -->
+                    <span>{{ videoinfo.pv_num }}</span>
+                  </li>
+                  <li @click="setzan">
+                    <i
+                      class="iconfont icon-like-x like fa-heart"
+                      style="color: #e75d58"
+                      v-show="videoinfo.is_like == 1"
+                    ></i>
+                    <i class="iconfont icon-like like" v-show="videoinfo.is_like != 1"></i>
+                    <span>{{ videoinfo.like_num }}</span>
+                  </li>
+                  <li @click="lookpl">
+                    <i class="iconfont icon-duihuaqipao"></i>
+                    <span>{{ videoinfo.pl_num }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </van-swipe-item>
+      <van-swipe-item class="product_swiper">
+        <div class="video-list" v-if="!isvideoshow">
+          <div class="video-block" @click="dblclick">
+            <video-player
+              class="video-player vjs-custom-skin"
+              ref="videoPlayer"
+              :playsinline="true"
+              :options="playerOptions"
+              @play="onPlayerPlay($event)"
+              @pause="onPlayerPause($event)"
+              @ended="onPlayerEnded($event)"
+              @waiting="onPlayerWaiting($event)"
+              @playing="onPlayerPlaying($event)"
+              @loadeddata="onPlayerLoadeddata($event)"
+              @timeupdate="onPlayerTimeupdate($event)"
+              @canplay="onPlayerCanplay($event)"
+              @canplaythrough="onPlayerCanplaythrough($event)"
+              @statechanged="playerStateChanged($event)"
+              @ready="playerReadied"
+            >
+            </video-player>
+            <div class="bofang">
+              <i class="iconfont icon-bofang bofangicon" v-show="isbofang"></i>
+            </div>
+          </div>
+          <div class="foolter">
+            <div class="desc">
+              {{ videoinfo.name }}
+            </div>
+            <div class="userinfo flexbetween">
+              <div class="user-info flexstart" @click="goGZ()">
+                <div class="user-img">
+                  <img src="@/assets/logo.jpg" alt="" />
+                </div>
+                <div class="user-name">
+                  <p class="usertitle flexstart">天空之橙<img src="../../assets/rz.png" alt="" /></p>
+                  <p style="color: #8c8c8c">10个朋友关注</p>
+                </div>
+              </div>
+              <div class="user-button">
+                <ul>
+                  <li @click="setcollect">
+                    <i
+                      class="iconfont icon-shoucang2"
+                      style="color: #fd9632; font-size: 28px"
+                      v-show="videoinfo.is_collect == 1"
+                    ></i>
+                    <i class="iconfont icon-shoucang" v-show="videoinfo.is_collect != 1"></i>
+                    <span>{{ videoinfo.collect_num }}</span>
+                  </li>
+                  <li @click="onshare">
+                    <i class="iconfont icon-fenxiang"></i>
+                    <span>{{ videoinfo.pv_num }}</span>
+                  </li>
+                  <li @click="setzan">
+                    <i
+                      class="iconfont icon-like-x like fa-heart"
+                      style="color: #e75d58"
+                      v-show="videoinfo.is_like == 1"
+                    ></i>
+                    <i class="iconfont icon-like like" v-show="videoinfo.is_like != 1"></i>
+                    <span>{{ videoinfo.like_num }}</span>
+                  </li>
+                  <li @click="lookpl">
+                    <i class="iconfont icon-duihuaqipao" style="font-size: 30px"></i>
+                    <span>{{ videoinfo.pl_num }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </van-swipe-item>
+    </van-swipe>
     <!-- 评论 -->
     <van-popup
       v-model="show"
@@ -165,7 +244,6 @@ export default {
   name: 'Home',
   data() {
     return {
-      numman: 12,
       listnum: 2,
       is_next: true,
       videoloop: true,
@@ -191,7 +269,7 @@ export default {
       playerOptions: {
         // playbackRates: [0.5, 1.0, 1.5, 2.0, 3.0], // 可选的播放速度
         autoplay: true, // 如果为 true,浏览器准备好时开始回放。
-        muted: false, // 默认情况下将会消除任何音频。
+        muted: true, // 默认情况下将会消除任何音频。
         loop: false, // 是否视频一结束就重新开始。
         preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
         language: 'zh-CN',
@@ -219,8 +297,6 @@ export default {
     this.getvideolist(this.$route.query.page || 1)
     this.getVideoDetails(this.$route.query.id)
     this.setVideoPv()
-    this.numman = localStorage.getItem('NUM') || 12
-
     // this.getVideoComment()
   },
   mounted() {
@@ -444,9 +520,9 @@ export default {
     },
 
     goGZ() {
-      // location.href =
-      //   'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA4NTA2OTAyNA==&scene=110#wechat_redirect'
-      // return
+      location.href =
+        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA4NTA2OTAyNA==&scene=110#wechat_redirect'
+      return
       this.$router.replace({
         path: '/'
       })
@@ -727,20 +803,25 @@ export default {
     }
 
     .foolter {
+      // position: absolute;
+      // bottom: 0;
+      // left: 0;
+      // right: 0;
+
       width: 100%;
       font-size: 14px;
-      color: #cdcdcd;
-      padding: 0 8px 0 18px;
+      color: rgb(226, 226, 226);
+      padding: 10px 8px 10px 18px;
       box-sizing: border-box;
-      overflow: hidden;
-
+      // font-weight: 800;
+      padding-bottom: constant(safe-area-inset-bottom);
+      padding-bottom: env(safe-area-inset-bottom);
       .desc {
         width: 100%;
         height: 48px;
         display: flex;
         justify-content: flex-start;
         align-items: flex-end;
-        margin-bottom: 10px;
         p {
           max-height: 48px;
           display: -webkit-box;
@@ -751,18 +832,14 @@ export default {
       }
       .userinfo {
         // padding-top: 0.30667rem;
-        font-size: 14px;
-        height: 80px;
-        // font-weight: 800;
-        box-sizing: border-box;
-        padding-bottom: constant(safe-area-inset-bottom);
-        padding-bottom: env(safe-area-inset-bottom);
+        font-size: 12px;
+        min-height: 77px;
         .user-info {
-          width: 48%;
+          min-width: 157px;
           flex-shrink: 0;
           .user-img {
-            width: 42px;
-            height: 42px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: rgb(226, 226, 226);
             margin-right: 10px;
@@ -773,15 +850,11 @@ export default {
               display: block;
             }
           }
-          .user-name {
-            font-size: 14px;
-          }
           .usertitle {
             // font-weight: 800;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 14px;
             img {
-              width: 18px;
+              width: 16px;
               display: block;
               margin-left: 4px;
             }
@@ -789,40 +862,33 @@ export default {
         }
         .user-button {
           flex: 1;
-          height: 100%;
           ul {
-            height: 100%;
             display: flex;
             justify-content: space-around;
             align-items: center;
             li {
               font-weight: normal;
               display: flex;
-              justify-content: space-evenly;
+              justify-content: space-around;
               align-items: center;
               flex-direction: column;
               // margin-left: 16px;
-              box-sizing: border-box;
-              padding: 12px 0;
               height: 100%;
-              // width: 1.25rem;
-              min-height: 77px;
+              width: 1.25rem;
               i {
                 padding: 0;
-                margin: 0;
-                font-size: 28px;
+                font-size: 25px;
                 line-height: 1;
+                padding-bottom: 4px;
                 display: inline-block;
-                // height: 26px;
-                color: #cdcdcd;
+                height: 26px;
               }
+              // .icon-duihuaqipao {
+              //   font-size: 30px;
+              // }
               span {
                 padding: 0;
-                margin: 0;
-                // margin-top: 3px;
-                font-size: 14px;
-                font-weight: 600;
-                color: #cdcdcd;
+                font-size: 13px;
               }
             }
           }

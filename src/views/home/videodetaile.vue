@@ -1,153 +1,77 @@
 <template>
   <div class="home">
-    <van-swipe :show-indicators="false" ref="vanswipe" :loop="videoloop" @change="onChange" vertical>
-      <van-swipe-item class="product_swiper" v-for="index in listnum" :key="index">
-        <div class="video-list" v-if="index == 1 ? isvideoshow : !isvideoshow">
-          <div class="video-block" @click="dblclick">
-            <video-player
-              class="video-player vjs-custom-skin"
-              ref="videoPlayer"
-              :playsinline="true"
-              :options="playerOptions"
-              @play="onPlayerPlay($event)"
-              @pause="onPlayerPause($event)"
-              @ended="onPlayerEnded($event)"
-              @waiting="onPlayerWaiting($event)"
-              @playing="onPlayerPlaying($event)"
-              @loadeddata="onPlayerLoadeddata($event)"
-              @timeupdate="onPlayerTimeupdate($event)"
-              @canplay="onPlayerCanplay($event)"
-              @canplaythrough="onPlayerCanplaythrough($event)"
-              @statechanged="playerStateChanged($event)"
-              @ready="playerReadied"
-            >
-            </video-player>
-            <!-- 播放按钮 -->
-            <!-- @click.capture="dblclick" -->
-            <div class="bofang">
-              <i class="iconfont icon-bofang bofangicon" v-show="isbofang"></i>
+    <div class="video-list">
+      <div class="video-block" @click="dblclick">
+        <video-player
+          class="video-player vjs-custom-skin"
+          ref="videoPlayer"
+          webkit-playsinline="true"
+          x5-playsinline="true"
+          x5-video-orientation="landscape"
+          :playsinline="true"
+          :options="playerOptions"
+          @play="onPlayerPlay($event)"
+          @pause="onPlayerPause($event)"
+          @ended="onPlayerEnded($event)"
+          @waiting="onPlayerWaiting($event)"
+          @playing="onPlayerPlaying($event)"
+          @loadeddata="onPlayerLoadeddata($event)"
+          @timeupdate="onPlayerTimeupdate($event)"
+          @canplay="onPlayerCanplay($event)"
+          @canplaythrough="onPlayerCanplaythrough($event)"
+          @statechanged="playerStateChanged($event)"
+          @ready="playerReadied"
+        >
+        </video-player>
+        <div class="bofang">
+          <i class="iconfont icon-bofang bofangicon" v-show="isbofang"></i>
+        </div>
+      </div>
+      <!-- 底部 -->
+      <div class="foolter">
+        <div class="desc">
+          <p>{{ videoinfo.name }}</p>
+        </div>
+        <div class="userinfo flexbetween">
+          <div class="user-info flexstart" @click="goGZ(videoinfo)">
+            <div class="user-img">
+              <img src="@/assets/logo.jpg" alt="" />
+            </div>
+            <div class="user-name">
+              <p class="usertitle flexstart">天空之橙<img src="../../assets/rz.png" alt="" /></p>
+              <p style="color: #8c8c8c">{{ numman }}个朋友关注</p>
             </div>
           </div>
-          <!-- 底部 -->
-          <div class="foolter">
-            <div class="desc">
-              <p>{{ videoinfo.name }}</p>
-            </div>
-            <div class="userinfo flexbetween">
-              <div class="user-info flexstart" @click="goGZ(videoinfo)">
-                <div class="user-img">
-                  <img src="@/assets/logo.jpg" alt="" />
-                </div>
-                <div class="user-name">
-                  <p class="usertitle flexstart">天空之橙<img src="../../assets/rz.png" alt="" /></p>
-                  <p style="color: #8c8c8c">10个朋友关注</p>
-                </div>
-              </div>
-              <div class="user-button">
-                <ul>
-                  <li @click="setcollect">
-                    <i class="iconfont icon-shoucang-x" style="color: #fd9632" v-show="videoinfo.is_collect == 1"></i>
-                    <i class="iconfont icon-shoucang" v-show="videoinfo.is_collect != 1"></i>
-                    <span>{{ videoinfo.collect_num }}</span>
-                  </li>
-                  <li @click="onshare">
-                    <i class="iconfont icon-fenxiang"></i>
-                    <!-- <i class="iconfont icon-jurassic_openeyes"></i> -->
-                    <span>{{ videoinfo.pv_num }}</span>
-                  </li>
-                  <li @click="setzan">
-                    <i
-                      class="iconfont icon-like-x like fa-heart"
-                      style="color: #e75d58"
-                      v-show="videoinfo.is_like == 1"
-                    ></i>
-                    <i class="iconfont icon-like like" v-show="videoinfo.is_like != 1"></i>
-                    <span>{{ videoinfo.like_num }}</span>
-                  </li>
-                  <li @click="lookpl">
-                    <i class="iconfont icon-duihuaqipao"></i>
-                    <span>{{ videoinfo.pl_num }}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
+          <div class="user-button">
+            <ul>
+              <li @click="setcollect">
+                <i class="iconfont icon-shoucang-x" style="color: #fd9632" v-show="videoinfo.is_collect == 1"></i>
+                <i class="iconfont icon-shoucang" v-show="videoinfo.is_collect != 1"></i>
+                <span>{{ videoinfo.collect_num }}</span>
+              </li>
+              <li @click="onshare">
+                <i class="iconfont icon-fenxiang"></i>
+                <!-- <i class="iconfont icon-jurassic_openeyes"></i> -->
+                <span>{{ videoinfo.pv_num }}</span>
+              </li>
+              <li @click="setzan">
+                <i
+                  class="iconfont icon-like-x like fa-heart"
+                  style="color: #e75d58"
+                  v-show="videoinfo.is_like == 1"
+                ></i>
+                <i class="iconfont icon-like like" v-show="videoinfo.is_like != 1"></i>
+                <span>{{ videoinfo.like_num }}</span>
+              </li>
+              <li @click="lookpl">
+                <i class="iconfont icon-duihuaqipao"></i>
+                <span>{{ videoinfo.pl_num }}</span>
+              </li>
+            </ul>
           </div>
         </div>
-      </van-swipe-item>
-      <!-- <van-swipe-item class="product_swiper">
-        <div class="video-list" v-if="!isvideoshow">
-          <div class="video-block" @click="dblclick">
-            <video-player
-              class="video-player vjs-custom-skin"
-              ref="videoPlayer"
-              :playsinline="true"
-              :options="playerOptions"
-              @play="onPlayerPlay($event)"
-              @pause="onPlayerPause($event)"
-              @ended="onPlayerEnded($event)"
-              @waiting="onPlayerWaiting($event)"
-              @playing="onPlayerPlaying($event)"
-              @loadeddata="onPlayerLoadeddata($event)"
-              @timeupdate="onPlayerTimeupdate($event)"
-              @canplay="onPlayerCanplay($event)"
-              @canplaythrough="onPlayerCanplaythrough($event)"
-              @statechanged="playerStateChanged($event)"
-              @ready="playerReadied"
-            >
-            </video-player>
-            <div class="bofang">
-              <i class="iconfont icon-bofang bofangicon" v-show="isbofang"></i>
-            </div>
-          </div>
-          <div class="foolter">
-            <div class="desc">
-              {{ videoinfo.name }}
-            </div>
-            <div class="userinfo flexbetween">
-              <div class="user-info flexstart" @click="goGZ()">
-                <div class="user-img">
-                  <img src="@/assets/logo.jpg" alt="" />
-                </div>
-                <div class="user-name">
-                  <p class="usertitle flexstart">天空之橙<img src="../../assets/rz.png" alt="" /></p>
-                  <p style="color: #8c8c8c">10个朋友关注</p>
-                </div>
-              </div>
-              <div class="user-button">
-                <ul>
-                  <li @click="setcollect">
-                    <i
-                      class="iconfont icon-shoucang2"
-                      style="color: #fd9632; font-size: 28px"
-                      v-show="videoinfo.is_collect == 1"
-                    ></i>
-                    <i class="iconfont icon-shoucang" v-show="videoinfo.is_collect != 1"></i>
-                    <span>{{ videoinfo.collect_num }}</span>
-                  </li>
-                  <li @click="onshare">
-                    <i class="iconfont icon-fenxiang"></i>
-                    <span>{{ videoinfo.pv_num }}</span>
-                  </li>
-                  <li @click="setzan">
-                    <i
-                      class="iconfont icon-like-x like fa-heart"
-                      style="color: #e75d58"
-                      v-show="videoinfo.is_like == 1"
-                    ></i>
-                    <i class="iconfont icon-like like" v-show="videoinfo.is_like != 1"></i>
-                    <span>{{ videoinfo.like_num }}</span>
-                  </li>
-                  <li @click="lookpl">
-                    <i class="iconfont icon-duihuaqipao" style="font-size: 30px"></i>
-                    <span>{{ videoinfo.pl_num }}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </van-swipe-item> -->
-    </van-swipe>
+      </div>
+    </div>
     <!-- 评论 -->
     <van-popup
       v-model="show"
@@ -241,6 +165,7 @@ export default {
   name: 'Home',
   data() {
     return {
+      numman: 12,
       listnum: 2,
       is_next: true,
       videoloop: true,
@@ -294,12 +219,28 @@ export default {
     this.getvideolist(this.$route.query.page || 1)
     this.getVideoDetails(this.$route.query.id)
     this.setVideoPv()
+    this.numman = localStorage.getItem('NUM') || 12
+
     // this.getVideoComment()
   },
   mounted() {
     this.adtouch()
   },
   methods: {
+    isIos() {
+      let u = navigator.userAgent
+      let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 //android终端
+      let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //
+      if (isIOS) {
+        return false
+      } else {
+        return true
+      }
+    },
+    playsinline() {
+      this.$set(this.playerOptions, 'muted', false)
+      return this.isIos()
+    },
     // 滑动事件
     adtouch() {
       let that = this
@@ -391,7 +332,7 @@ export default {
     dblclick(e) {
       console.log(e)
       if (clickTime === 0) {
-        // this.paly()
+        this.paly()
         clickTime = new Date().getTime()
       } else {
         if (new Date().getTime() - clickTime < 300) {
@@ -446,6 +387,9 @@ export default {
           return item
         })
         this.videoList = res.splice(index)
+      } else {
+        this.listQuery['page'] = 1
+        this.getvideolist()
       }
     },
     onChange(event) {
@@ -462,20 +406,31 @@ export default {
           this.getVideoDetails(this.videoList[this.index].id)
         } else {
           // that.listnum = 1
-          that.videoloop = false
-          that.$toast('暂无更多')
+          this.listQuery.page++
+          this.getvideolist(this.listQuery.page)
+          this.index = 0
+          this.getVideoDetails(this.videoList[this.index].id)
+          // that.videoloop = false
+          // that.$toast('暂无更多')
         }
       } else {
-        if (that.index > 1) {
-          that.index--
-          that.videoloop = true
-          console.log('this.getVideoDetails', this.index, this.videoList[this.index])
-          that.getVideoDetails(that.videoList[that.index].id)
+        if (that.index <= 0) {
+          this.index = this.videoList.length
+          this.getVideoDetails(this.videoList[this.index].id)
         } else {
-          // that.listnum = 1
-          that.videoloop = false
-          that.$toast('到达顶部')
+          this.index--
+          this.getVideoDetails(this.videoList[this.index].id)
         }
+        // if (that.index > 1) {
+        //   that.index--
+        //   that.videoloop = true
+        //   console.log('this.getVideoDetails', this.index, this.videoList[this.index])
+        //   that.getVideoDetails(that.videoList[that.index].id)
+        // } else {
+        //   // that.listnum = 1
+        //   that.videoloop = false
+        //   that.$toast('到达顶部')
+        // }
       }
     },
     setVideoPv() {
@@ -578,14 +533,15 @@ export default {
     async getVideoDetails(video_id) {
       const id = getUrlKey('id')
       let res = await getVideoDetails({ video_id })
+      let imgUrl = res.data.video_url + '?vframe/jpg/offset/' + (res.data.zhen_num || 1)
       let wxConfig = {
         title: res.data.name,
         url: window.location.href,
         desc: '',
         link:
           window.location.origin + '/wxvideo/searchvideodetaile' + '?id=' + video_id + '&page=' + this.listQuery.page,
-        // imgUrl: res.data.video_url + '?vframe/jpg/offset/' + (res.data.zhen_num || 1)
-        imgUrl: res.data.cover || 'http://api.skyorange.cn/logo.jpg'
+
+        imgUrl: res.data.cover || imgUrl
         // imgUrl: 'http://api.skyorange.cn/logo.jpg'
       }
       getShareInfo(wxConfig)
@@ -599,7 +555,6 @@ export default {
       for (const key in object) {
         if (Object.hasOwnProperty.call(object, key)) {
           const element = object[key]
-
           let noarr = ['is_collect', 'is_like', 'is_top', 'id']
           if (!noarr.includes(key)) {
             if (typeof element == 'number') {
@@ -616,14 +571,27 @@ export default {
       this.videoinfo = obj
       console.log(this.videoinfo, ' this.videoinfo ')
     },
-
-    // this.$refs.videoPlayer.player.pause() // 暂停
     //  // 重置进度条
     paly() {
+      console.log(this.$refs)
       if (this.isbofang) {
-        this.$refs.videoPlayer.player.play() // 播放
+        this.$refs['videoPlayer'].player.play() // 播放
       } else {
-        this.$refs.videoPlayer.player.pause() // 暂停
+        this.$refs['videoPlayer'].player.pause() // 暂停
+      }
+      return
+      try {
+        if (this.isbofang) {
+          this.$refs['videoPlayer'].player.play() // 播放
+        } else {
+          this.$refs['videoPlayer'].player.pause() // 暂停
+        }
+      } catch (error) {
+        if (this.isbofang) {
+          this.$refs['videoPlayer'][0].player.play() // 播放
+        } else {
+          this.$refs['videoPlayer'][0].player.pause() // 暂停
+        }
       }
     },
     pause() {
@@ -632,6 +600,7 @@ export default {
     // 播放回调
     onPlayerPlay(player) {
       console.log('player play!', player)
+      this.$set(this.playerOptions, 'muted', false)
       this.isbofang = false
     },
     // 暂停回调
@@ -758,25 +727,20 @@ export default {
     }
 
     .foolter {
-      // position: absolute;
-      // bottom: 0;
-      // left: 0;
-      // right: 0;
-
       width: 100%;
       font-size: 14px;
-      color: rgb(226, 226, 226);
-      padding: 10px 8px 10px 18px;
+      color: #cdcdcd;
+      padding: 0 8px 0 18px;
       box-sizing: border-box;
-      // font-weight: 800;
-      padding-bottom: constant(safe-area-inset-bottom);
-      padding-bottom: env(safe-area-inset-bottom);
+      overflow: hidden;
+
       .desc {
         width: 100%;
         height: 48px;
         display: flex;
         justify-content: flex-start;
         align-items: flex-end;
+        margin-bottom: 10px;
         p {
           max-height: 48px;
           display: -webkit-box;
@@ -786,57 +750,79 @@ export default {
         }
       }
       .userinfo {
-        padding-top: 0.30667rem;
-        font-size: 12px;
-        .user-img {
-          width: 34px;
-          height: 34px;
-          border-radius: 50%;
-          background: rgb(226, 226, 226);
-          margin-right: 10px;
-          overflow: hidden;
-          img {
-            width: 100%;
-            height: 100%;
-            display: block;
+        // padding-top: 0.30667rem;
+        font-size: 14px;
+        height: 80px;
+        // font-weight: 800;
+        box-sizing: border-box;
+        padding-bottom: constant(safe-area-inset-bottom);
+        padding-bottom: env(safe-area-inset-bottom);
+        .user-info {
+          width: 48%;
+          flex-shrink: 0;
+          .user-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgb(226, 226, 226);
+            margin-right: 10px;
+            overflow: hidden;
+            img {
+              width: 100%;
+              height: 100%;
+              display: block;
+            }
           }
-        }
-        .usertitle {
-          // font-weight: 800;
-          font-size: 14px;
-          img {
-            width: 16px;
-            display: block;
-            margin-left: 4px;
+          .user-name {
+            font-size: 14px;
+          }
+          .usertitle {
+            // font-weight: 800;
+            font-size: 16px;
+            font-weight: 600;
+            img {
+              width: 18px;
+              display: block;
+              margin-left: 4px;
+            }
           }
         }
         .user-button {
+          flex: 1;
+          height: 100%;
           ul {
+            height: 100%;
             display: flex;
             justify-content: space-around;
             align-items: center;
             li {
               font-weight: normal;
               display: flex;
-              justify-content: center;
+              justify-content: space-evenly;
               align-items: center;
               flex-direction: column;
               // margin-left: 16px;
-              width: 1.25rem;
+              box-sizing: border-box;
+              padding: 12px 0;
+              height: 100%;
+              // width: 1.25rem;
+              min-height: 77px;
               i {
                 padding: 0;
-                font-size: 25px;
+                margin: 0;
+                font-size: 28px;
                 line-height: 1;
-                padding-bottom: 4px;
                 display: inline-block;
-                height: 26px;
+                // height: 26px;
+                color: #cdcdcd;
               }
-              // .icon-duihuaqipao {
-              //   font-size: 30px;
-              // }
               span {
                 padding: 0;
-                font-size: 12px;
+                margin: 0;
+                // margin-top: 3px;
+                font-size: 14px;
+                font-weight: 600;
+                color: #cdcdcd;
               }
             }
           }

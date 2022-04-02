@@ -5,9 +5,9 @@ export default function (router) {
   router.beforeEach((to, from, next) => {
     // const id = getUrlKey('id')
     // const url = '' + window.location.origin + window.location.pathname + id && '?id=' + id
-    setToken(
-      '180e2ccaa48dc21e24798ef9c56657d7a8eca478c16a356d5d80416af7d7c857b11eed9cd77438e488af8c116cd7d4775e872b9b4c2f995ace6e2a974eec55a55726b9ee532fdb4a01e6449788adc7ce'
-    )
+    // setToken(
+    //   '8f775ca6645e5512e84bd54f30d417688a8edbece64adf3c10c33b54045178f8d3261ab77b63463740339e181099600d5e872b9b4c2f995ace6e2a974eec55a55726b9ee532fdb4a01e6449788adc7ce'
+    // )
     if (getToken()) {
       // console.log(window.location.origin + window.location.pathname + id ? '?id=' + id : '', id, url, getToken())
       if (to.path == '/') {
