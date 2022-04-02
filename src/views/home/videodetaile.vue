@@ -1,67 +1,153 @@
 <template>
   <div class="home">
-    <video-player
-      v-if="isvideoshow"
-      class="video-player vjs-custom-skin"
-      ref="videoPlayer"
-      :playsinline="true"
-      :options="playerOptions"
-      @play="onPlayerPlay($event)"
-      @pause="onPlayerPause($event)"
-      @ended="onPlayerEnded($event)"
-      @waiting="onPlayerWaiting($event)"
-      @playing="onPlayerPlaying($event)"
-      @loadeddata="onPlayerLoadeddata($event)"
-      @timeupdate="onPlayerTimeupdate($event)"
-      @canplay="onPlayerCanplay($event)"
-      @canplaythrough="onPlayerCanplaythrough($event)"
-      @statechanged="playerStateChanged($event)"
-      @ready="playerReadied"
-    >
-    </video-player>
-    <!-- 播放按钮 -->
-    <div @click.stop="" class="bofang" @click="paly">
-      <i class="iconfont icon-bofang bofangicon" v-show="isbofang"></i>
-    </div>
-    <!-- 底部 -->
-    <div class="foolter">
-      <div class="desc">
-        {{ videoinfo.name }}
-      </div>
-      <div class="userinfo flexbetween">
-        <div class="user-info flexstart" @click="goGZ">
-          <div class="user-img">
-            <img src="@/assets/logo.jpg" alt="" />
+    <van-swipe :show-indicators="false" ref="vanswipe" :loop="videoloop" @change="onChange" vertical>
+      <van-swipe-item class="product_swiper" v-for="index in listnum" :key="index">
+        <div class="video-list" v-if="index == 1 ? isvideoshow : !isvideoshow">
+          <div class="video-block" @click="dblclick">
+            <video-player
+              class="video-player vjs-custom-skin"
+              ref="videoPlayer"
+              :playsinline="true"
+              :options="playerOptions"
+              @play="onPlayerPlay($event)"
+              @pause="onPlayerPause($event)"
+              @ended="onPlayerEnded($event)"
+              @waiting="onPlayerWaiting($event)"
+              @playing="onPlayerPlaying($event)"
+              @loadeddata="onPlayerLoadeddata($event)"
+              @timeupdate="onPlayerTimeupdate($event)"
+              @canplay="onPlayerCanplay($event)"
+              @canplaythrough="onPlayerCanplaythrough($event)"
+              @statechanged="playerStateChanged($event)"
+              @ready="playerReadied"
+            >
+            </video-player>
+            <!-- 播放按钮 -->
+            <!-- @click.capture="dblclick" -->
+            <div class="bofang">
+              <i class="iconfont icon-bofang bofangicon" v-show="isbofang"></i>
+            </div>
           </div>
-          <div class="user-name">
-            <p class="usertitle flexstart">天空之橙·DESIGN <img src="../../assets/rz.png" alt="" /></p>
-            <p>10个朋友关注</p>
+          <!-- 底部 -->
+          <div class="foolter">
+            <div class="desc">
+              <p>{{ videoinfo.name }}</p>
+            </div>
+            <div class="userinfo flexbetween">
+              <div class="user-info flexstart" @click="goGZ(videoinfo)">
+                <div class="user-img">
+                  <img src="@/assets/logo.jpg" alt="" />
+                </div>
+                <div class="user-name">
+                  <p class="usertitle flexstart">天空之橙<img src="../../assets/rz.png" alt="" /></p>
+                  <p style="color: #8c8c8c">10个朋友关注</p>
+                </div>
+              </div>
+              <div class="user-button">
+                <ul>
+                  <li @click="setcollect">
+                    <i class="iconfont icon-shoucang-x" style="color: #fd9632" v-show="videoinfo.is_collect == 1"></i>
+                    <i class="iconfont icon-shoucang" v-show="videoinfo.is_collect != 1"></i>
+                    <span>{{ videoinfo.collect_num }}</span>
+                  </li>
+                  <li @click="onshare">
+                    <i class="iconfont icon-fenxiang"></i>
+                    <!-- <i class="iconfont icon-jurassic_openeyes"></i> -->
+                    <span>{{ videoinfo.pv_num }}</span>
+                  </li>
+                  <li @click="setzan">
+                    <i
+                      class="iconfont icon-like-x like fa-heart"
+                      style="color: #e75d58"
+                      v-show="videoinfo.is_like == 1"
+                    ></i>
+                    <i class="iconfont icon-like like" v-show="videoinfo.is_like != 1"></i>
+                    <span>{{ videoinfo.like_num }}</span>
+                  </li>
+                  <li @click="lookpl">
+                    <i class="iconfont icon-duihuaqipao"></i>
+                    <span>{{ videoinfo.pl_num }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="user-button">
-          <ul>
-            <li @click="setcollect">
-              <i class="iconfont icon-shoucang2" v-show="videoinfo.is_collect == 1"></i>
-              <i class="iconfont icon-shoucang" v-show="videoinfo.is_collect != 1"></i>
-              <span>{{ videoinfo.collect_num }}</span>
-            </li>
-            <li>
-              <i class="iconfont icon-jurassic_openeyes"></i>
-              <span>{{ videoinfo.pv_num }}</span>
-            </li>
-            <li @click="setzan">
-              <i class="iconfont icon-aixin1" v-show="videoinfo.is_like == 1"></i>
-              <i class="iconfont icon-aixin" v-show="videoinfo.is_like != 1"></i>
-              <span>{{ videoinfo.like_num }}</span>
-            </li>
-            <li @click="lookpl">
-              <i class="iconfont icon-xiaoxi"></i>
-              <span>{{ videoinfo.pl_num }}</span>
-            </li>
-          </ul>
+      </van-swipe-item>
+      <!-- <van-swipe-item class="product_swiper">
+        <div class="video-list" v-if="!isvideoshow">
+          <div class="video-block" @click="dblclick">
+            <video-player
+              class="video-player vjs-custom-skin"
+              ref="videoPlayer"
+              :playsinline="true"
+              :options="playerOptions"
+              @play="onPlayerPlay($event)"
+              @pause="onPlayerPause($event)"
+              @ended="onPlayerEnded($event)"
+              @waiting="onPlayerWaiting($event)"
+              @playing="onPlayerPlaying($event)"
+              @loadeddata="onPlayerLoadeddata($event)"
+              @timeupdate="onPlayerTimeupdate($event)"
+              @canplay="onPlayerCanplay($event)"
+              @canplaythrough="onPlayerCanplaythrough($event)"
+              @statechanged="playerStateChanged($event)"
+              @ready="playerReadied"
+            >
+            </video-player>
+            <div class="bofang">
+              <i class="iconfont icon-bofang bofangicon" v-show="isbofang"></i>
+            </div>
+          </div>
+          <div class="foolter">
+            <div class="desc">
+              {{ videoinfo.name }}
+            </div>
+            <div class="userinfo flexbetween">
+              <div class="user-info flexstart" @click="goGZ()">
+                <div class="user-img">
+                  <img src="@/assets/logo.jpg" alt="" />
+                </div>
+                <div class="user-name">
+                  <p class="usertitle flexstart">天空之橙<img src="../../assets/rz.png" alt="" /></p>
+                  <p style="color: #8c8c8c">10个朋友关注</p>
+                </div>
+              </div>
+              <div class="user-button">
+                <ul>
+                  <li @click="setcollect">
+                    <i
+                      class="iconfont icon-shoucang2"
+                      style="color: #fd9632; font-size: 28px"
+                      v-show="videoinfo.is_collect == 1"
+                    ></i>
+                    <i class="iconfont icon-shoucang" v-show="videoinfo.is_collect != 1"></i>
+                    <span>{{ videoinfo.collect_num }}</span>
+                  </li>
+                  <li @click="onshare">
+                    <i class="iconfont icon-fenxiang"></i>
+                    <span>{{ videoinfo.pv_num }}</span>
+                  </li>
+                  <li @click="setzan">
+                    <i
+                      class="iconfont icon-like-x like fa-heart"
+                      style="color: #e75d58"
+                      v-show="videoinfo.is_like == 1"
+                    ></i>
+                    <i class="iconfont icon-like like" v-show="videoinfo.is_like != 1"></i>
+                    <span>{{ videoinfo.like_num }}</span>
+                  </li>
+                  <li @click="lookpl">
+                    <i class="iconfont icon-duihuaqipao" style="font-size: 30px"></i>
+                    <span>{{ videoinfo.pl_num }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </van-swipe-item> -->
+    </van-swipe>
     <!-- 评论 -->
     <van-popup
       v-model="show"
@@ -114,18 +200,55 @@
         </div>
       </div>
     </van-popup>
+    <!-- 分享提示 -->
+    <van-popup
+      v-model="isshareShow"
+      :close-on-popstate="true"
+      position="top"
+      :style="{ maxHeight: '100%', background: 'rgba(0,0,0,0)' }"
+    >
+      <img
+        style="width: 100%; box-sizing: border-box; padding: 20px 20px 56px 144px"
+        src="@/assets/fx.png"
+        alt=""
+        @click="
+          () => {
+            isshareShow = false
+          }
+        "
+      />
+    </van-popup>
   </div>
 </template>
 
 <script>
-import { getVideoDetails, zanVideo, comment_video, collect_video, getVideoComment, setVideoPv } from '@/api/user.js'
+import {
+  getVideoDetails,
+  getVideoList,
+  zanVideo,
+  comment_video,
+  collect_video,
+  getVideoComment,
+  setVideoPv
+} from '@/api/user.js'
 import { getShareInfo } from '@/utils/share.js'
 import { getUrlKey } from '@/utils/wxLoad.js'
-import { formatTime } from '@/utils/index.js'
+import { formatTime, bigNumberTransform } from '@/utils/index.js'
+import { getvideo } from '@/utils/loading'
+let clickTime = 0
+
 export default {
   name: 'Home',
   data() {
     return {
+      listnum: 2,
+      is_next: true,
+      videoloop: true,
+      isshareShow: false,
+      listQuery: {
+        page: 1
+      },
+      videoList: [],
       is_collect: false,
       is_like: false,
       isbofang: true,
@@ -138,7 +261,8 @@ export default {
       show: false,
       page: 1,
       videoinfo: {},
-      isvideoshow: false,
+      isvideoshow: true,
+      index: 0,
       playerOptions: {
         // playbackRates: [0.5, 1.0, 1.5, 2.0, 3.0], // 可选的播放速度
         autoplay: true, // 如果为 true,浏览器准备好时开始回放。
@@ -167,39 +291,216 @@ export default {
     }
   },
   created() {
-    this.getVideoDetails()
+    this.getvideolist(this.$route.query.page || 1)
+    this.getVideoDetails(this.$route.query.id)
     this.setVideoPv()
-    this.getVideoComment()
+    // this.getVideoComment()
   },
   mounted() {
-    // pushHistory()
-    // // 监听历史记录点, 添加返回事件监听
-    // console.log('onpopstate')
-    // window.onpopstate = () => {
-    //   // 输入要返回的上一级路由地址
-    //   this.$router.replace({ path: '/' })
-    // }
+    this.adtouch()
   },
   methods: {
+    // 滑动事件
+    adtouch() {
+      let that = this
+      var startx, starty
+      //获得角度
+      function getAngle(angx, angy) {
+        return (Math.atan2(angy, angx) * 180) / Math.PI
+      }
+
+      //根据起点终点返回方向 1向上 2向下 3向左 4向右 0未滑动
+      function getDirection(startx, starty, endx, endy) {
+        var angx = endx - startx
+        var angy = endy - starty
+        var result = 0
+
+        //如果滑动距离太短
+        if (Math.abs(angx) < 2 && Math.abs(angy) < 2) {
+          return result
+        }
+
+        var angle = getAngle(angx, angy)
+        console.log(angle)
+        if (angle >= -135 && angle <= -45) {
+          result = 1
+        } else if (angle > 45 && angle < 135) {
+          result = 2
+        } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+          result = 3
+        } else if (angle >= -45 && angle <= 45) {
+          result = 4
+        }
+
+        return result
+      }
+      //手指接触屏幕
+      document.addEventListener(
+        'touchstart',
+        function (e) {
+          startx = e.touches[0].pageX
+          starty = e.touches[0].pageY
+        },
+        false
+      )
+      //手指离开屏幕
+      document.addEventListener(
+        'touchend',
+        function (e) {
+          var endx, endy
+          endx = e.changedTouches[0].pageX
+          endy = e.changedTouches[0].pageY
+          var direction = getDirection(startx, starty, endx, endy)
+          switch (direction) {
+            case 0:
+              // alert('未滑动！')
+              break
+            case 1:
+              that.is_next = true
+              console.log(that.$refs, 'that.$refs')
+              // that.$refs['vanswipe'].next()
+              // that.listnum = 2
+              // if (that.index < that.videoList.length - 1) {
+              //   that.index += 1
+              //   that.videoloop = true
+              //   that.getVideoDetails(that.videoList[that.index].id)
+              //   that.isvideoshow = !that.isvideoshow
+              // } else {
+              //   that.listnum = 1
+              //   that.videoloop = false
+              //   that.$toast('暂无更多')
+              // }
+              break
+            case 2:
+              that.is_next = false
+              // that.$refs['vanswipe'].prev()
+              // alert('向下！')
+              break
+            case 3:
+              // alert('向左！')
+              break
+            case 4:
+              // alert('向右！')
+              break
+            default:
+          }
+        },
+        false
+      )
+    },
+    dblclick(e) {
+      console.log(e)
+      if (clickTime === 0) {
+        // this.paly()
+        clickTime = new Date().getTime()
+      } else {
+        if (new Date().getTime() - clickTime < 300) {
+          this.createHeart(e)
+          this.setzan()
+          clickTime = 0
+        } else {
+          clickTime = new Date().getTime()
+          this.paly()
+        }
+      }
+    },
+    createHeart(e) {
+      const loveMe = document.querySelector('.video-block')
+      const heart = document.createElement('i')
+      heart.classList.add('fa')
+      heart.classList.add('fa-heart')
+
+      const x = e.clientX
+      const y = e.clientY
+      const xInside = x
+      const yInside = y
+      // const leftOffset = e.target.offsetLeft
+      // const topOffset = e.target.offsetTop
+
+      // const xInside = x - leftOffset
+      // const yInside = y - topOffset
+
+      heart.style.top = `${yInside}px`
+      heart.style.left = `${xInside}px`
+
+      loveMe.appendChild(heart)
+
+      setTimeout(() => heart.remove(), 1000)
+    },
+    onshare() {
+      this.isshareShow = true
+    },
+    // 获取视频列表
+
+    async getvideolist(page = 1) {
+      this.listQuery['page'] = page
+      let res = await getVideoList(this.listQuery)
+      console.log(res)
+      res = res.data
+      if (res.length > 0) {
+        let index = res.findIndex(item => item.id == this.$route.query.id)
+        res.map(item => {
+          item['page'] = this.listQuery.page
+          item['like_num'] = bigNumberTransform(item['like_num'])
+          item['cover'] = item['video_url'] + '?vframe/jpg/offset/' + (item.zhen_num || 1)
+          return item
+        })
+        this.videoList = res.splice(index)
+      }
+    },
+    onChange(event) {
+      let that = this
+      // 滑动
+      console.log(this.videoList, 'getvideolist')
+      console.log('滑动', event, that.is_next)
+      that.listnum = 2
+      this.isvideoshow = !this.isvideoshow
+      if (that.is_next) {
+        if (this.index < this.videoList.length - 1) {
+          this.index += 1
+          console.log('this.getVideoDetails', this.index, this.videoList[this.index])
+          this.getVideoDetails(this.videoList[this.index].id)
+        } else {
+          // that.listnum = 1
+          that.videoloop = false
+          that.$toast('暂无更多')
+        }
+      } else {
+        if (that.index > 1) {
+          that.index--
+          that.videoloop = true
+          console.log('this.getVideoDetails', this.index, this.videoList[this.index])
+          that.getVideoDetails(that.videoList[that.index].id)
+        } else {
+          // that.listnum = 1
+          that.videoloop = false
+          that.$toast('到达顶部')
+        }
+      }
+    },
     setVideoPv() {
       setVideoPv({ video_id: this.$route.query.id }).then(res => {
-        console.log(res)
+        // console.log(res)
       })
     },
 
     lookpl() {
-      this.show = true
+      return
     },
 
-    // 获取视频评论列表
     goGZ() {
       location.href =
-        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAwNzczOTk3OA==&scene=110#wechat_redirect'
+        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA4NTA2OTAyNA==&scene=110#wechat_redirect'
+      return
+      this.$router.replace({
+        path: '/'
+      })
     },
+    // 获取视频评论列表
+
     getVideoComment() {
       this.loading = true
       getVideoComment({ video_id: this.$route.query.id, page: this.page }).then(res => {
-        console.log(res)
         res = res.data
         if (res.length > 0) {
           res.map(item => {
@@ -211,7 +512,6 @@ export default {
           } else {
             this.comment = this.comment.concat(res)
           }
-          console.log(this.comment, 'this.comment')
           this.page++
           this.loading = false
         } else {
@@ -222,6 +522,7 @@ export default {
     // 点赞
     setcollect() {
       let { is_collect, id: video_id } = this.videoinfo
+      console.log(this.videoinfo, 'setcollect')
       if (is_collect == 1) return
       is_collect = is_collect == 1 ? 2 : 1
       collect_video({ video_id, is_collect }).then(res => {
@@ -231,7 +532,7 @@ export default {
         } else {
           this.$toast('取消收藏')
         }
-        this.getVideoDetails()
+        this.getVideoDetails(video_id)
       })
     },
     setzan() {
@@ -245,16 +546,15 @@ export default {
         } else {
           this.$toast('取消点赞')
         }
-        this.getVideoDetails()
+        this.getVideoDetails(video_id)
       })
     },
     setcomment() {
-      let video_id = this.$route.query.id
+      let video_id = videoinfo.id
       this.$toast.loading({
         message: '加载中...',
         forbidClick: true
       })
-      console.log('12121', video_id, this)
       let content = this.value
       if (!content) {
         this.$toast('请输入评论')
@@ -270,35 +570,56 @@ export default {
         this.page = 1
         this.finished = false
         this.getVideoComment()
-        this.getVideoDetails()
+        this.getVideoDetails(videoinfo.id)
       })
     },
 
     // 获取视频详情
-    async getVideoDetails() {
+    async getVideoDetails(video_id) {
       const id = getUrlKey('id')
-      let res = await getVideoDetails({ video_id: this.$route.query.id })
-      // this.$refs.videoPlayer.player.src(res.data.video_url)
-      this.playerOptions['sources'][0]['src'] = res.data.video_url
-      this.playerOptions['poster'] = res.data.video_url + '?vframe/jpg/offset/' + (res.data.zhen_num || 1)
-      this.isvideoshow = true
-      console.log(this.playerOptions, 'getVideoDetails')
-      document.title = res.data.name
-      this.videoinfo = res.data
+      let res = await getVideoDetails({ video_id })
       let wxConfig = {
         title: res.data.name,
-        url: location.href,
+        url: window.location.href,
         desc: '',
-        link: window.location.origin + '/wxvideo/searchvideodetaile' + '?id=' + id,
-        imgUrl: res.data.video_url + '?vframe/jpg/offset/' + (res.data.zhen_num || 1)
+        link:
+          window.location.origin + '/wxvideo/searchvideodetaile' + '?id=' + video_id + '&page=' + this.listQuery.page,
+        // imgUrl: res.data.video_url + '?vframe/jpg/offset/' + (res.data.zhen_num || 1)
+        imgUrl: res.data.cover || 'http://api.skyorange.cn/logo.jpg'
+        // imgUrl: 'http://api.skyorange.cn/logo.jpg'
       }
       getShareInfo(wxConfig)
+      // this.$refs.videoPlayer.player.src(res.data.video_url)
+      this.$set(this.playerOptions.sources[0], 'src', res.data.video_url)
+      this.$set(this.playerOptions, 'poster', res.data.video_url + '?vframe/jpg/offset/' + (res.data.zhen_num || 1))
+      console.log(this.playerOptions, 'getVideoDetails')
+      document.title = res.data.name
+      let object = res.data
+      let obj = {}
+      for (const key in object) {
+        if (Object.hasOwnProperty.call(object, key)) {
+          const element = object[key]
+
+          let noarr = ['is_collect', 'is_like', 'is_top', 'id']
+          if (!noarr.includes(key)) {
+            if (typeof element == 'number') {
+              // element = bigNumberTransform(element)
+              obj[key] = bigNumberTransform(element)
+            } else {
+              obj[key] = element
+            }
+          } else {
+            obj[key] = element
+          }
+        }
+      }
+      this.videoinfo = obj
+      console.log(this.videoinfo, ' this.videoinfo ')
     },
 
     // this.$refs.videoPlayer.player.pause() // 暂停
     //  // 重置进度条
     paly() {
-      console.log(this.isbofang)
       if (this.isbofang) {
         this.$refs.videoPlayer.player.play() // 播放
       } else {
@@ -324,7 +645,7 @@ export default {
     },
     // DOM元素上的readyState更改导致播放停止
     onPlayerWaiting($event) {
-      console.log($event)
+      console.log($event, 'DOM元素上的readyState更改导致播放停止')
     },
     // 已开始播放回调
     onPlayerPlaying($event) {
@@ -336,7 +657,7 @@ export default {
     },
     // 当前播放位置发生变化时触发。
     onPlayerTimeupdate($event) {
-      console.log($event)
+      // console.log($event)
     },
     //媒体的readyState为HAVE_FUTURE_DATA或更高
     onPlayerCanplay(player) {
@@ -361,105 +682,172 @@ export default {
 ::v-deep.home {
   width: 100%;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // justify-content: center;
   background: #000;
   position: relative;
-  .video-player {
+  .video-list {
     width: 100%;
-    .video-js {
-      .vjs-control-bar {
-        background: rgba(0, 0, 0, 0);
-        bottom: -31px;
-        // 音量
-        .vjs-volume-panel {
-          display: none;
-        }
-        //
-        // 时间
-        .vjs-current-time,
-        .vjs-no-flex .vjs-current-time {
-          display: block;
-        }
-        // 进度
-        .vjs-slider {
-          background-color: #252525;
-        }
-      }
-      // 播放按钮
-      .vjs-big-play-button {
-        display: none;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-        .vjs-icon-placeholder {
-          line-height: 1.5em;
-        }
-      }
-    }
-  }
-  .foolter {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    font-size: 14px;
-    color: #fff;
-    padding: 10px 10px;
-    box-sizing: border-box;
-    // font-weight: 800;
-    .desc {
-      width: 90%;
-    }
-    .userinfo {
-      .user-img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #fff;
-        margin-right: 10px;
-        overflow: hidden;
-        img {
-          width: 100%;
-          height: 100%;
-          display: block;
-        }
-      }
-      .usertitle {
-        font-weight: 800;
-        img {
-          width: 16px;
-          display: block;
-          margin-left: 4px;
-        }
-      }
-      .user-button {
-        ul {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-          li {
-            font-weight: normal;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            margin-left: 16px;
-            width: 20px;
-            i {
-              padding: 0;
-              font-size: 24px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    .video-block {
+      width: 100%;
+      flex: 1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      .video-player {
+        width: 100%;
+        .video-js {
+          .vjs-control-bar {
+            background: rgba(0, 0, 0, 0);
+            bottom: -31px;
+            // 音量
+            .vjs-volume-panel {
+              display: none;
             }
-            span {
-              padding: 0;
+            //
+            // 时间
+            .vjs-current-time,
+            .vjs-no-flex .vjs-current-time {
+              display: block;
+            }
+            // 进度
+            .vjs-slider {
+              background-color: #252525;
+            }
+          }
+          // 播放按钮
+          .vjs-big-play-button {
+            display: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            .vjs-icon-placeholder {
+              line-height: 1.5em;
             }
           }
         }
       }
+      .fa-heart {
+        position: absolute;
+        animation: grow 0.6s linear;
+        transform: translate(-50%, -50%) scale(0);
+      }
+      .fa-heart {
+        color: #e75d58;
+      }
+      @keyframes grow {
+        to {
+          transform: translate(-50%, -50%) scale(10);
+          opacity: 0;
+        }
+      }
+    }
+
+    .foolter {
+      // position: absolute;
+      // bottom: 0;
+      // left: 0;
+      // right: 0;
+
+      width: 100%;
+      font-size: 14px;
+      color: rgb(226, 226, 226);
+      padding: 10px 8px 10px 18px;
+      box-sizing: border-box;
+      // font-weight: 800;
+      padding-bottom: constant(safe-area-inset-bottom);
+      padding-bottom: env(safe-area-inset-bottom);
+      .desc {
+        width: 100%;
+        height: 48px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        p {
+          max-height: 48px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+        }
+      }
+      .userinfo {
+        padding-top: 0.30667rem;
+        font-size: 12px;
+        .user-img {
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          background: rgb(226, 226, 226);
+          margin-right: 10px;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: 100%;
+            display: block;
+          }
+        }
+        .usertitle {
+          // font-weight: 800;
+          font-size: 14px;
+          img {
+            width: 16px;
+            display: block;
+            margin-left: 4px;
+          }
+        }
+        .user-button {
+          ul {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            li {
+              font-weight: normal;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              // margin-left: 16px;
+              width: 1.25rem;
+              i {
+                padding: 0;
+                font-size: 25px;
+                line-height: 1;
+                padding-bottom: 4px;
+                display: inline-block;
+                height: 26px;
+              }
+              // .icon-duihuaqipao {
+              //   font-size: 30px;
+              // }
+              span {
+                padding: 0;
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .van-swipe {
+    height: 100%;
+    .product_swiper {
+      height: 100%;
     }
   }
 

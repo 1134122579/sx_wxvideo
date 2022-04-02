@@ -1,8 +1,8 @@
 @font-face {
   font-family: 'iconfont'; /* Project id 3250097 */
-  src: url('//at.alicdn.com/t/font_3250097_uain2u60dg.woff2?t=1647488613380') format('woff2'),
-    url('//at.alicdn.com/t/font_3250097_uain2u60dg.woff?t=1647488613380') format('woff'),
-    url('//at.alicdn.com/t/font_3250097_uain2u60dg.ttf?t=1647488613380') format('truetype');
+  src: url('//at.alicdn.com/t/font_3250097_8zz6p2uifv.woff2?t=1648809023118') format('woff2'),
+    url('//at.alicdn.com/t/font_3250097_8zz6p2uifv.woff?t=1648809023118') format('woff'),
+    url('//at.alicdn.com/t/font_3250097_8zz6p2uifv.ttf?t=1648809023118') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,34 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-like:before {
+  content: '\e603';
+}
+
+.icon-duihuaqipao:before {
+  content: '\e93c';
+}
+
+.icon-shoucang-x:before {
+  content: '\e601';
+}
+
+.icon-like-x:before {
+  content: '\eca2';
+}
+
+.icon-duihuaqipao1:before {
+  content: '\e61e';
+}
+
+.icon-lik:before {
+  content: '\eca1';
+}
+
+.icon-dibudaohanglan-:before {
+  content: '\e628';
 }
 
 .icon-bofang:before {

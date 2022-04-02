@@ -28,7 +28,7 @@
         <div class="flexstart desc">
           <a
             style="color: #55648c"
-            href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAwNzczOTk3OA==&scene=110#wechat_redirect"
+            href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA4NTA2OTAyNA==&scene=110#wechat_redirect"
             target="_blank"
           >
             <i class="iconfont icon-geren icongzlogo"></i>公众号：{{ title }}
@@ -65,6 +65,8 @@
 </template>
 <script>
 import { getVideoList } from '@/api/user.js'
+import { setvideo } from '@/utils/loading'
+import { formatTime, bigNumberTransform } from '@/utils/index.js'
 export default {
   data() {
     return {
@@ -84,7 +86,7 @@ export default {
   methods: {
     goGZ() {
       location.href =
-        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAwNzczOTk3OA==&scene=110#wechat_redirect'
+        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA4NTA2OTAyNA==&scene=110#wechat_redirect'
     },
     onLoad() {
       // 异步更新数据
@@ -114,7 +116,8 @@ export default {
       this.$router.push({
         path: '/videodetaile',
         query: {
-          id: data.id
+          id: data.id,
+          page: data.page
         }
       })
     },
@@ -122,9 +125,12 @@ export default {
       getVideoList(this.listQuery).then(res => {
         console.log(res)
         res = res.data
+
         if (res.length > 0) {
           res.map(item => {
-            item['cover'] = item['video_url'] + '?vframe/jpg/offset/' + (item.zhen_num || 1)
+            item['page'] = this.listQuery.page
+            item['like_num'] = bigNumberTransform(item['like_num'])
+            item['cover'] = item['cover'] || item['video_url'] + '?vframe/jpg/offset/' + (item.zhen_num || 1)
             return item
           })
           if (this.listQuery.page == 1) {
@@ -132,6 +138,7 @@ export default {
           } else {
             this.list = this.list.concat(res)
           }
+          setvideo(this.list)
           this.listQuery.page++
           this.loading = false
         } else {
