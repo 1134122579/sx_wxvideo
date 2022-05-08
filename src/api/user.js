@@ -38,6 +38,14 @@ export function getUserName(params) {
     hideloading: true
   })
 }
+export function getInfo(params) {
+  return request({
+    url: api.getInfo,
+    method: 'get',
+    params,
+    hideloading: true
+  })
+}
 // 用户名称 get 方法
 export function getAbout(params) {
   return request({

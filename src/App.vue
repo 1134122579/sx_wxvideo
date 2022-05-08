@@ -15,6 +15,7 @@ export default {
   --color-li-background: #f6f6f6;
   --color-scheme-text-color: #7a7a7a;
   --color-scheme-title-color: #7a7a7a;
+  --gzh-color: #576b95;
 }
 
 /* Light mode */
@@ -24,6 +25,7 @@ export default {
     --color-li-background: #f6f6f6;
     --color-scheme-text-color: #7e7e7e;
     --color-scheme-title-color: #101010;
+    --gzh-color: #576b95;
   }
 }
 
@@ -33,7 +35,8 @@ export default {
     --color-scheme-background: #101010;
     --color-li-background: #222020;
     --color-scheme-text-color: #7e7e7e;
-    --color-scheme-title-color: #fff;
+    --color-scheme-title-color: rgba(203, 203, 203, 0.968);
+    --gzh-color: #596786;
   }
 }
 #app {

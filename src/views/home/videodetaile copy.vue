@@ -941,7 +941,7 @@ export default {
             padding-bottom: 18px;
             .commentblock-header {
               .name {
-                color: #546891;
+                color: #576b95;
                 margin-right: 14px;
               }
               .time {

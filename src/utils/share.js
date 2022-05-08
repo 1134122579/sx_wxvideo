@@ -38,5 +38,12 @@ async function getShareInfo(wxConfig) {
     wx.updateTimelineShareData(wxConfig)
   })
 }
-
-export { getShareInfo }
+function setShareInfo(wxConfig) {
+  //如果分享的内容会根据情况变化，那么这里可以传入分享标题及url
+  console.log('微信分享内容配置', wxConfig)
+  wx.ready(function () {
+    wx.updateAppMessageShareData(wxConfig)
+    wx.updateTimelineShareData(wxConfig)
+  })
+}
+export { getShareInfo, setShareInfo }

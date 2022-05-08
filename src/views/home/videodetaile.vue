@@ -10,6 +10,7 @@
           x5-video-orientation="landscape"
           :playsinline="true"
           :options="playerOptions"
+          v-show="!videoloading"
           @play="onPlayerPlay($event)"
           @pause="onPlayerPause($event)"
           @ended="onPlayerEnded($event)"
@@ -30,7 +31,7 @@
       <!-- 底部 -->
       <div class="foolter">
         <div class="desc">
-          <p>{{ videoinfo.name }}</p>
+          <p>{{ videoinfo.desc }}</p>
         </div>
         <div class="userinfo flexbetween">
           <div class="user-info flexstart" @click="goGZ(videoinfo)">
@@ -188,6 +189,7 @@ export default {
       videoinfo: {},
       isvideoshow: true,
       index: 0,
+      videoloading: true,
       playerOptions: {
         // playbackRates: [0.5, 1.0, 1.5, 2.0, 3.0], // 可选的播放速度
         autoplay: true, // 如果为 true,浏览器准备好时开始回放。
@@ -201,7 +203,7 @@ export default {
           {
             type: 'video/mp4', // 类型
             // src: ''
-            src: 'http://mfyfile.greatorange.cn/MFYVideo1611813886594町洋0150无水印中文加S.mp4' // url地址
+            src: '' // url地址
           }
         ],
         poster: '', // 封面地址
@@ -219,7 +221,7 @@ export default {
     this.getvideolist(this.$route.query.page || 1)
     this.getVideoDetails(this.$route.query.id)
     this.setVideoPv()
-    this.numman = localStorage.getItem('NUM') || 12
+    this.numman = localStorage.getItem('NUM') || 1
 
     // this.getVideoComment()
   },
@@ -332,7 +334,6 @@ export default {
     dblclick(e) {
       console.log(e)
       if (clickTime === 0) {
-        this.paly()
         clickTime = new Date().getTime()
       } else {
         if (new Date().getTime() - clickTime < 300) {
@@ -534,13 +535,13 @@ export default {
       const id = getUrlKey('id')
       let res = await getVideoDetails({ video_id })
       let imgUrl = res.data.video_url + '?vframe/jpg/offset/' + (res.data.zhen_num || 1)
+      this.videoloading = false
       let wxConfig = {
-        title: res.data.name,
+        title: res.data.share_title ? res.data.share_title : res.data.name,
         url: window.location.href,
         desc: '',
         link:
           window.location.origin + '/wxvideo/searchvideodetaile' + '?id=' + video_id + '&page=' + this.listQuery.page,
-
         imgUrl: res.data.cover || imgUrl
         // imgUrl: 'http://api.skyorange.cn/logo.jpg'
       }
@@ -736,13 +737,14 @@ export default {
 
       .desc {
         width: 100%;
-        height: 48px;
+        height: 80px;
         display: flex;
         justify-content: flex-start;
         align-items: flex-end;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
+        font-size: 16px;
         p {
-          max-height: 48px;
+          max-height: 58px;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
@@ -810,7 +812,7 @@ export default {
               i {
                 padding: 0;
                 margin: 0;
-                font-size: 28px;
+                font-size: 26px;
                 line-height: 1;
                 display: inline-block;
                 // height: 26px;
@@ -821,7 +823,6 @@ export default {
                 margin: 0;
                 // margin-top: 3px;
                 font-size: 14px;
-                font-weight: 600;
                 color: #cdcdcd;
               }
             }
@@ -875,7 +876,8 @@ export default {
             padding-bottom: 18px;
             .commentblock-header {
               .name {
-                color: #546891;
+                color: #576b95;
+
                 margin-right: 14px;
               }
               .time {

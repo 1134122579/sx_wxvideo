@@ -21,13 +21,15 @@
         <div class="flexstart desc">
           <!-- <i class="iconfont icon-rz iconlogo rz"></i> -->
           <img src="@/assets/rz.png" class="rz" alt="" />
-          设计美学自媒体
+          空间设计美学自媒体
         </div>
-        <div class="flexstart desc">设计美学自媒体</div>
+        <div class="flexstart desc">分享全球设计创意&空间美学</div>
+        <div class="flexstart desc">Design 设计｜建筑·空间·景观·运营</div>
+        <div class="flexstart desc">「设计上海」有趣的灵魂在这里遇见</div>
         <div class="flexstart desc"><i class="iconfont icon-guanzhuchenggong iconlogo"></i>{{ numman }}个朋友关注</div>
         <div class="flexstart desc">
           <a
-            style="color: #55648c"
+            style="color: var(--gzh-color)"
             href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA4NTA2OTAyNA==&scene=110#wechat_redirect"
             target="_blank"
           >
@@ -37,9 +39,11 @@
       </div>
       <div class="header-label">
         <ul class="flexstart">
-          <li>#{{ title }}</li>
+          <li>#天空之橙·Design</li>
+          <li>#设计</li>
+          <li>#空间</li>
           <li>#建筑</li>
-          <li>#人文情怀</li>
+          <li>#室内</li>
         </ul>
       </div>
     </div>
@@ -64,17 +68,19 @@
   </div>
 </template>
 <script>
-import { getVideoList } from '@/api/user.js'
+import { getVideoList, getInfo } from '@/api/user.js'
 import { setvideo } from '@/utils/loading'
+import { setShareInfo } from '@/utils/share'
 import { formatTime, bigNumberTransform } from '@/utils/index.js'
 export default {
   data() {
     return {
       title: '天空之橙·DESIGN',
-      numman:10,
+      numman: 0,
       list: [],
       loading: false,
       finished: false,
+      pageInfo: '',
       listQuery: {
         page: 1
       }
@@ -83,30 +89,20 @@ export default {
   created() {
     // this.getVideoList()
     document.title = this.title
-    this.numman = this.randomNum(10, 30)
-    localStorage.setItem('NUM', this.numman)
+    this.getInfo()
   },
   methods: {
+    // 获取配置
+    getInfo() {
+      getInfo().then(res => {
+        this.pageInfo = res.data
+        this.numman = res.data.gz_num
+        localStorage.setItem('NUM', res.data.gz_num)
+      })
+    },
     goGZ() {
       location.href =
         'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA4NTA2OTAyNA==&scene=110#wechat_redirect'
-    },
-    onLoad() {
-      // 异步更新数据
-      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-
-        // 加载状态结束
-        this.loading = false
-
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 1000)
     },
     goVideo(data) {
       // this.$router.replace({
@@ -166,7 +162,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .homepage {
   background: var(--color-scheme-background);
   color: var(--color-scheme-text-color);
@@ -246,11 +242,13 @@ export default {
     }
     .header-label {
       margin-top: 40px;
+      ul {
+        flex-wrap: nowrap;
+      }
       li {
-        margin-right: 8px;
-        // background: #f6f6f6;
+        margin-right: 6px;
         background: var(--color-li-background);
-        padding: 3px 8px;
+        padding: 4px 7px;
         border-radius: 10px;
         font-size: 13px;
       }
