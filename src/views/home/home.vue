@@ -198,7 +198,7 @@ export default {
           }
           .userinfo-adress {
             margin-top: 8px;
-            font-size: 14px;
+            font-size: 16px;
           }
         }
       }

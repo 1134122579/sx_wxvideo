@@ -36,7 +36,7 @@ export default {
     --color-li-background: #222020;
     --color-scheme-text-color: #7e7e7e;
     --color-scheme-title-color: rgba(203, 203, 203, 0.968);
-    --gzh-color: #596786;
+    --gzh-color: #808fa6;
   }
 }
 #app {
@@ -54,5 +54,23 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.position {
+  position: absolute;
+  z-index: 555;
+  color: rgb(231, 93, 88);
+  font-size: 18px !important;
+  -webkit-animation: grow-data 0.6s linear;
+  animation: grow-data 0.6s linear;
+  -webkit-transform: translate(-50%, -50%) scale(0);
+  -ms-transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%) scale(0);
+}
+@keyframes grow-data {
+  100% {
+    -webkit-transform: translate(-50%, -50%) scale(10);
+    transform: translate(-50%, -50%) scale(10);
+    opacity: 0;
+  }
 }
 </style>

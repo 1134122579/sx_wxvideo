@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div :class="is_ios ? 'IOSstyle' : 'home'">
     <div class="video-list">
       <div class="video-block" @click="dblclick">
         <video-player
@@ -182,6 +182,7 @@ export default {
       loading: false,
       finished: false,
       refreshing: false,
+      is_ios: false,
       comment: [],
       value: '',
       show: false,
@@ -221,6 +222,7 @@ export default {
     this.getvideolist(this.$route.query.page || 1)
     this.getVideoDetails(this.$route.query.id)
     this.setVideoPv()
+    this.isIos()
     this.numman = localStorage.getItem('NUM') || 1
 
     // this.getVideoComment()
@@ -233,10 +235,11 @@ export default {
       let u = navigator.userAgent
       let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 //android终端
       let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //
+      this.is_ios = isIOS
       if (isIOS) {
-        return false
-      } else {
         return true
+      } else {
+        return false
       }
     },
     playsinline() {
@@ -349,24 +352,20 @@ export default {
     createHeart(e) {
       const loveMe = document.querySelector('.video-block')
       const heart = document.createElement('i')
-      heart.classList.add('fa')
-      heart.classList.add('fa-heart')
-
+      heart.classList.add('iconfont')
+      heart.classList.add('icon-like-x')
+      heart.classList.add('position')
       const x = e.clientX
       const y = e.clientY
       const xInside = x
       const yInside = y
       // const leftOffset = e.target.offsetLeft
       // const topOffset = e.target.offsetTop
-
       // const xInside = x - leftOffset
       // const yInside = y - topOffset
-
       heart.style.top = `${yInside}px`
       heart.style.left = `${xInside}px`
-
       loveMe.appendChild(heart)
-
       setTimeout(() => heart.remove(), 1000)
     },
     onshare() {
@@ -533,8 +532,21 @@ export default {
     // 获取视频详情
     async getVideoDetails(video_id) {
       const id = getUrlKey('id')
+      if (!id) {
+        this.$router.replace({
+          path: '/'
+        })
+        return
+      }
       let res = await getVideoDetails({ video_id })
       let imgUrl = res.data.video_url + '?vframe/jpg/offset/' + (res.data.zhen_num || 1)
+      console.log(!res.data.video_url, 'video_urlvideo_urlvideo_urlvideo_urlvideo_url')
+      if (!res.data?.video_url) {
+        this.$router.replace({
+          path: '/'
+        })
+        return
+      }
       this.videoloading = false
       let wxConfig = {
         title: res.data.share_title ? res.data.share_title : res.data.name,
@@ -741,7 +753,7 @@ export default {
         display: flex;
         justify-content: flex-start;
         align-items: flex-end;
-        margin-bottom: 6px;
+        // margin-bottom: 6px;
         font-size: 16px;
         p {
           max-height: 58px;
@@ -756,7 +768,7 @@ export default {
         font-size: 14px;
         height: 80px;
         // font-weight: 800;
-        box-sizing: border-box;
+        // box-sizing: border-box;
         padding-bottom: constant(safe-area-inset-bottom);
         padding-bottom: env(safe-area-inset-bottom);
         .user-info {
@@ -823,6 +835,268 @@ export default {
                 margin: 0;
                 // margin-top: 3px;
                 font-size: 14px;
+                color: #cdcdcd;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .van-swipe {
+    height: 100%;
+    .product_swiper {
+      height: 100%;
+    }
+  }
+
+  .comment {
+    height: 100%;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    .comment-title {
+      width: 100%;
+      text-align: center;
+      height: 50px;
+      line-height: 50px;
+      flex-shrink: 0;
+    }
+    .cmmentlist {
+      flex: 1;
+      width: 100%;
+      background: #fafafa;
+      overflow: auto;
+      .list {
+        height: 100%;
+        padding: 14px;
+        .listblock {
+          display: flex;
+          justify-content: flex-start;
+          padding: 5px 0;
+          .headimgurl {
+            flex-shrink: 0;
+          }
+          align-items: flex-start;
+          .commentblock {
+            padding: 4px 8px;
+            border-bottom: 2px solid #f2f2f4;
+            padding-bottom: 18px;
+            .commentblock-header {
+              .name {
+                color: #576b95;
+
+                margin-right: 14px;
+              }
+              .time {
+                color: #aca8a9;
+              }
+            }
+          }
+        }
+      }
+    }
+    .comment-floter {
+      width: 100%;
+    }
+  }
+  // .播放
+  .bofang {
+    position: absolute;
+    // top: 50%;
+    left: 0;
+    // transform: translate(0, 50%);
+    width: 100%;
+    min-height: 210px;
+    // background: wheat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    color: #fff;
+    .bofangicon {
+      font-size: 40px;
+    }
+  }
+}
+::v-deep.IOSstyle {
+  width: 100%;
+  height: 100vh;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // justify-content: center;
+  background: #000;
+  position: relative;
+  .video-list {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    .video-block {
+      width: 100%;
+      flex: 1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      .video-player {
+        width: 100%;
+        .video-js {
+          .vjs-control-bar {
+            background: rgba(0, 0, 0, 0);
+            bottom: -31px;
+            // 音量
+            .vjs-volume-panel {
+              display: none;
+            }
+            //
+            // 时间
+            .vjs-current-time,
+            .vjs-no-flex .vjs-current-time {
+              display: block;
+            }
+            // 进度
+            .vjs-slider {
+              background-color: #252525;
+            }
+          }
+          // 播放按钮
+          .vjs-big-play-button {
+            display: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            .vjs-icon-placeholder {
+              line-height: 1.5em;
+            }
+          }
+        }
+      }
+      .fa-heart {
+        position: absolute;
+        animation: grow 0.6s linear;
+        transform: translate(-50%, -50%) scale(0);
+      }
+      .fa-heart {
+        color: #e75d58;
+      }
+      @keyframes grow {
+        to {
+          transform: translate(-50%, -50%) scale(10);
+          opacity: 0;
+        }
+      }
+    }
+
+    .foolter {
+      width: 100%;
+      font-size: 14px;
+      color: #cdcdcd;
+      padding: 0 8px 0 18px;
+      box-sizing: border-box;
+      overflow: hidden;
+
+      .desc {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        margin-bottom: 10px;
+        font-size: 14px;
+        p {
+          max-height: 58px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+        }
+      }
+      .userinfo {
+        // padding-top: 0.30667rem;
+        font-size: 12px;
+        height: 80px;
+        // font-weight: 800;
+        box-sizing: border-box;
+        padding-bottom: constant(safe-area-inset-bottom);
+        padding-bottom: env(safe-area-inset-bottom);
+        .user-info {
+          width: 48%;
+          flex-shrink: 0;
+          .user-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgb(226, 226, 226);
+            margin-right: 10px;
+            overflow: hidden;
+            img {
+              width: 100%;
+              height: 100%;
+              display: block;
+            }
+          }
+          .user-name {
+            font-size: 12px;
+          }
+          .usertitle {
+            // font-weight: 800;
+            font-size: 14px;
+            font-weight: 600;
+            img {
+              width: 18px;
+              display: block;
+              margin-left: 4px;
+            }
+          }
+        }
+        .user-button {
+          flex: 1;
+          height: 100%;
+          ul {
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            li {
+              font-weight: normal;
+              display: flex;
+              justify-content: space-evenly;
+              align-items: center;
+              flex-direction: column;
+              // margin-left: 16px;
+              box-sizing: border-box;
+              padding: 12px 0;
+              height: 100%;
+              // width: 1.25rem;
+              min-height: 77px;
+              i {
+                padding: 0;
+                margin: 0;
+                font-size: 24px;
+                line-height: 1;
+                display: inline-block;
+                // height: 26px;
+                color: #cdcdcd;
+              }
+              span {
+                padding: 0;
+                margin: 0;
+                // margin-top: 3px;
+                font-size: 12px;
                 color: #cdcdcd;
               }
             }

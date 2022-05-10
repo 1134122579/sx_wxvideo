@@ -6,7 +6,7 @@ export default function (router) {
     // const id = getUrlKey('id')
     // const url = '' + window.location.origin + window.location.pathname + id && '?id=' + id
     // setToken(
-    //   '322ec5e0520845d5c6c6d6dc022646cd8744dc7d551c8bd45a5fd4c6e75ecfcbc2142947572f481627f1c580728044a15e872b9b4c2f995ace6e2a974eec55a55726b9ee532fdb4a01e6449788adc7ce'
+    //   'e5b9f1f8bd5a317f85bd8cd8e05a6f5bfaf83dd6275efa7a313fb64f083029a091c51305fcf2ea979a86115a5e20c59c5e872b9b4c2f995ace6e2a974eec55a55726b9ee532fdb4a01e6449788adc7ce'
     // )
     if (getToken()) {
       // console.log(window.location.origin + window.location.pathname + id ? '?id=' + id : '', id, url, getToken())
