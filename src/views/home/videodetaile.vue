@@ -593,6 +593,7 @@ export default {
       } else {
         this.$refs['videoPlayer'].player.pause() // 暂停
       }
+
       return
       try {
         if (this.isbofang) {
