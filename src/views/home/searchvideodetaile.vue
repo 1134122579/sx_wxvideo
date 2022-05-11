@@ -338,6 +338,7 @@ export default {
       console.log(e)
       if (clickTime === 0) {
         clickTime = new Date().getTime()
+        this.paly()
       } else {
         if (new Date().getTime() - clickTime < 300) {
           this.createHeart(e)
