@@ -10,6 +10,7 @@ export default {
 </script>
 <style lang="scss">
 /* Defaults */
+
 :root {
   --color-scheme-background: #fff;
   --color-li-background: #f6f6f6;

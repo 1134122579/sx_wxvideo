@@ -663,6 +663,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+::v-deep .video-js .vjs-tech {
+  object-fit: fill;
+}
+::v-deep.vjs-poster {
+  background-size: cover;
+}
 ::v-deep.home {
   width: 100%;
   height: 100vh;

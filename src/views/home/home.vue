@@ -162,7 +162,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .homepage {
   background: var(--color-scheme-background);
   color: var(--color-scheme-text-color);
@@ -246,9 +246,10 @@ export default {
         flex-wrap: nowrap;
       }
       li {
+        white-space: nowrap;
         margin-right: 6px;
         background: var(--color-li-background);
-        padding: 4px 7px;
+        padding: 4px 6px;
         border-radius: 10px;
         font-size: 13px;
       }
