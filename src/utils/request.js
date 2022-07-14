@@ -26,6 +26,7 @@ service.interceptors.request.use(
 
     if (getToken()) {
       config.headers['token'] = getToken()
+      // config.headers['Authorization']="Bearer "+getToken()
     }
     return config
   },
